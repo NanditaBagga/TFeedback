@@ -1,0 +1,58 @@
+.login-container{
+    background-color:#e3e3ff;
+    display:flex;
+    flex:1;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(250, 250, 250, 0.45);
+    height: 80%;
+    width:35%;
+}
+
+.title{
+    font-size: x-large;
+    text-align: center;
+    margin: 3% 0 0 0
+}
+
+.form-text{
+    font-size: medium;
+    font-weight: 500;
+    margin: 10% 0 0 0
+}
+
+.form-input{
+    width:100%;
+    border-radius: 8px;
+    padding:0.3rem;
+}
+
+.form-btn{
+    margin-top: 15%;
+    margin-left: 24%;
+    padding:0.3rem;
+    border-radius: 8px;
+    cursor:pointer
+}
+
+.form-btn:hover{
+    transition-duration: 200ms;
+   background-color: rgb(200,200,200);
+
+}
+
+.register{
+    text-align: center;
+    font-weight:400;
+    margin: 0.3% 0 0 0
+}
+
+

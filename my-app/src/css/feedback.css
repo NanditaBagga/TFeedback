@@ -1,0 +1,39 @@
+.message{
+    width: 70%;
+    background-color: rgb(255, 255, 255);
+    height: auto;
+    border-radius: 0.5rem;
+}
+#message-reply{
+    width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    position: relative;
+    /* display: none; */
+}
+
+#messages{
+    height: 80vh;
+    background-color:lightgray;
+    overflow-y: scroll;
+    position: relative;
+}
+.input-group{
+    width: 70%;
+}
+.chat{
+    position: fixed;
+    top: 95%;
+}
+.message-card{
+    background-color: white;
+    border-radius: 16px;
+    padding: 8px;
+    margin-top: 0.5%;
+}
+.card-msg{
+    border-top: 1px solid rgb(200,200,200);
+}
+.card-msg{
+    font-size: 16px;
+}
