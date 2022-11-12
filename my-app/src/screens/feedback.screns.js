@@ -1,14 +1,17 @@
-import React,{ useEffect, useState } from 'react'
+import React,{ useEffect, useState, useContext} from 'react'
 import { useParams } from "react-router-dom"
 import "../css/feedback.css"
 import axios from 'axios'
 import { MessageCard } from '../components/messageCard.component'
+import { UserContext } from '../services/user.context'
 
 export const Feedback = () => {
 
   const [title,setTitle]=useState(null)
   const [message,setMessage]=useState("")
   const [allMessages,setAllMessages]=useState([])
+  const { user }=useContext(UserContext)
+  const { name,type }=user
 
   const { id } = useParams()
   useEffect(()=>{
@@ -18,6 +21,7 @@ export const Feedback = () => {
     })
     .catch(e=>{
       console.log(e)
+      setAllMessages({name:"name"})
     });
   },[id])
 
@@ -29,7 +33,9 @@ export const Feedback = () => {
       return
     }
     let data={
-      title:message
+      title:message,
+      from:name,
+      userType:type
     }
     axios.post(`http://localhost:5000/home/course/${id}/send`, data).then(response=>{
       console.log(response.data)
@@ -39,7 +45,7 @@ export const Feedback = () => {
       var yyyy = today.getFullYear();
       const time=today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
       today = mm + '/' + dd + '/' + yyyy + " "+ time;
-      setAllMessages([...allMessages,{title:message,date:today}])
+      setAllMessages([...allMessages,{title:message,date:today,from:name,userType:String(type)}])
       setMessage("")
     }).catch(e=>{
       console.log(e)

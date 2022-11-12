@@ -3,9 +3,9 @@ import React from 'react'
 export const MessageCard = ({ msg }) => {
     return(
         <div id = "message-reply">
-        <div class="message-card">
+        <div className={msg.userType=="Student"?"message-card":"message-card-special"}>
           <div class = "card-header d-flex flex-row justify-content-between">
-              <div id = "sender-name">Nandita</div>
+              <div id = "sender-name">{msg.from}</div>
               <div>{msg.date}</div>
               <div class = "upvote d-flex flex-row justify-content-between">
                   <div>0</div>

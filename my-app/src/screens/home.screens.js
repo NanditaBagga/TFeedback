@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { Link } from 'react-router-dom';
 import "../css/home.css";
 import axios from 'axios';
 import { Card } from "../components/courseCard.component"
+import { UserContext } from '../services/user.context';
 
 export const Home = () => {
 
@@ -10,6 +12,7 @@ export const Home = () => {
   const [courses,setCourses]=useState([])
   const [addCourse,setAddCourse]=useState(false)
   const [courseName,setCourseName]=useState(null)
+  const { user } = useContext(UserContext)
 
   useEffect(()=>{
     setIsLoading(true)
@@ -129,7 +132,13 @@ export const Home = () => {
 
         <hr />
         
-        <h3 class = "mt-4">Manage StakeHolders</h3>
+        {user.type==="Student"?
+        (
+          <></>
+        ):
+        (
+          <>
+          <h3 class = "mt-4">Manage StakeHolders</h3>
           {addCourse?
           (
             <>
@@ -137,14 +146,14 @@ export const Home = () => {
                   <h3 style={{textAlign:"center"}}>Add new Course</h3>           
               </div>
               <form onSubmit={handleCourseSubmit}>
-                      <div class="mb-3">
-                        <label for="inputName" class="form-label">Name</label>
-                        <input style={{width:"50%"}} onChange={(text)=>setCourseName(text.target.value)} type="text" class="form-control" id="inputName" aria-describedby="inputName" />
-                      </div>
-                      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#facultyModal" onClick={()=>setAddCourse(false)}>
-                          Back
-                      </button>
-                      <input style={{marginLeft:"40%"}} className="btn btn-secondary" type={"submit"} />
+                <div class="mb-3">
+                  <label for="inputName" class="form-label">Name</label>
+                  <input style={{width:"50%"}} onChange={(text)=>setCourseName(text.target.value)} type="text" class="form-control" id="inputName" aria-describedby="inputName" />
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#facultyModal" onClick={()=>setAddCourse(false)}>
+                    Back
+                </button>
+                <input style={{marginLeft:"40%"}} className="btn btn-secondary" type={"submit"} />
               </form>
             </>
           ):
@@ -153,30 +162,43 @@ export const Home = () => {
                     <div class="card mt-2" style={{width: "24rem"}}>
                         <h5 class="card-header">Students</h5>
                         <div class="card-body d-flex flex-row justify-content-around align-items-center">                  
-                          <a href="#" className="btn btn-secondary">View</a>
-                          <a href="#" className="btn btn-secondary">Add</a>
+                          <Link to='/home/view/Student'>
+                            <btn className="btn btn-secondary">View</btn>
+                          </Link>
+                          <Link to='/home/add/Student'>
+                            <btn className="btn btn-secondary">Add</btn>
+                          </Link>
                         </div>
                     </div>
                     <div class="card mt-2" style={{width: "24rem"}}>
                         <h5 class="card-header">Faculty</h5>
-                        <div class="card-body d-flex flex-row justify-content-around align-items-center">                  
-                            <a href="./Faculty/view.html" class="btn btn-secondary">View</a>
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#facultyModal">
-                                Add
-                            </button>
+                        <div class="card-body d-flex flex-row justify-content-around align-items-center">  
+                        <Link to='/home/view/Faculty'>              
+                            <btn className="btn btn-secondary">View</btn>
+                        </Link>
+                        <Link to='/home/add/Faculty'>
+                            <btn className="btn btn-secondary">Add</btn>
+                          </Link>
                         </div>
                     </div>
                     <div class="card mt-2" style={{width: "24rem"}}>
                         <h5 class="card-header">Courses</h5>
-                        <div class="card-body d-flex flex-row justify-content-around align-items-center">                  
-                            <a href="#" class="btn btn-secondary">View</a>
+                        <div class="card-body d-flex flex-row justify-content-around align-items-center">  
+                        <Link to='/home/view/Course'>                
+                            <btn class="btn btn-secondary">View</btn>
+                        </Link>
                             <btn class="btn btn-secondary" onClick={()=>setAddCourse(true)}>Add</btn>
                         </div>
                     </div>            
                 </div>
           )}
-      </div>
-    </div>
+              
+              
+            </>
+        )
+        }
+        </div>
+        </div>
     </>
   );
 }

@@ -13,6 +13,8 @@ const courseSchema = new Schema({
   },
   messages:[{
     title:String,
+    from:String,
+    userType:String,
     date:{
       type:String
     }

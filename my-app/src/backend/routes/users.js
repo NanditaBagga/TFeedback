@@ -9,7 +9,6 @@ userRouter.route('/login').get((req, res) => {
             res.json("No")
         }
         else{
-            console.log(response)
             res.json(response)
         }
     }).catch(e=>{
@@ -21,7 +20,7 @@ userRouter.route('/login').get((req, res) => {
 userRouter.route('/register/:name').get((req,res)=>{
     const {name}=req.params
     Users.findOne({name:name}).then(response=>{
-        if(response===null)
+        if(response)
         {
             res.json("User already exists")
         }
@@ -36,7 +35,8 @@ userRouter.route('/register/:name').get((req,res)=>{
 
 userRouter.route('/register').post((req, res) => {
     const {name,password,email,mobile,type}=req.body;
-    const newUser = new Users({name,password,email,mobile,type});
+    const temp="null"
+    const newUser = new Users({name,password,email,mobile,type,key:temp});
     newUser.save()
     .then((response) =>
         res.json(response)     

@@ -1,0 +1,34 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(200, 200, 200, 0.45);
+    height: 80%;
+    width:60%;
+    margin-top: 2%;
+}
+
+.text{
+    font-size: larger;
+    font-weight: 500;
+    margin: 5% 0 0 0
+}
+
+.input{
+    width:100%;
+    border-radius: 8px;
+    padding:0.3rem;
+}
+
+.my-btn{
+    margin-left: 24%;
+    margin-bottom: 15%;
+    padding:0.3rem;
+    border-radius: 8px;
+    cursor:pointer
+}
+
+.my-btn:hover{
+    transition-duration: 200ms;
+   background-color: rgb(200,200,200);
+
+}

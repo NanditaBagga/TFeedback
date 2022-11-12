@@ -31,6 +31,12 @@
     padding: 8px;
     margin-top: 0.5%;
 }
+.message-card-special{
+    background-color: rgb(213, 199, 115);
+    border-radius: 16px;
+    padding: 8px;
+    margin-top: 0.5%;
+}
 .card-msg{
     border-top: 1px solid rgb(200,200,200);
     font-size: 16px;
@@ -40,5 +46,5 @@
 }
 .msg-container{
     display: flex;
-    margin:1% 6% 1% 6%
+    margin:1% 6% 1% 6%;
 }
