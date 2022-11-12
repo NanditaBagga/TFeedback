@@ -89,9 +89,9 @@ export const Feedback = () => {
           </div>
 
           <form onSubmit={handleMsgSubmit}>
-            <div class="container chat input-group mb-3">
+            <div className='msg-container'>
               <input type="text" value={message} onChange={(text)=>setMessage(text.target.value)} class="form-control" id = "user-feedback" placeholder="Type your feedback" aria-label="user-feedback" aria-describedby="button-send" /> 
-              <input type={"submit"} class="btn btn-primary" id="button-send" value='Send' /> 
+              <input type={"submit"} class="btn btn-primary" value='Send' /> 
             </div>
           </form>
         </>
