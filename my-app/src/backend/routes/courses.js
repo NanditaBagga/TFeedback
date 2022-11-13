@@ -18,7 +18,8 @@ router.route('/course/:id').get((req,res)=>{
 
 router.route('/add/course').post((req,res)=>{
     const { title, photo, createdAt } = req.body
-    const newCourse = new Courses({title, photo, createdAt});
+    const sub=""
+    const newCourse = new Courses({title, photo, createdAt,SubAdmin:sub});
 
   newCourse.save()
     .then(() => res.json('User added!'))
@@ -166,6 +167,17 @@ router.route("/course/:cid/:mid/:name/downvote").post((req,res)=>{
         console.log(e)
         res.json("Error occured")
         alert("Some error occured")
+    })
+})
+
+router.route("/course/SubAdmin").post((req,res)=>{
+    const SubAdmin=req.body.SubAdmin
+    const id=req.body.id
+    Courses.updateOne({_id:id},{$set:{SubAdmin:SubAdmin}}).then(response=>{
+        console.log(response)
+        res.json("Done")
+    }).catch(e=>{
+        res.json("Error occured")
     })
 })
 

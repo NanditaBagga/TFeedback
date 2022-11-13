@@ -13,6 +13,7 @@ export const Home = () => {
   const [addCourse,setAddCourse]=useState(false)
   const [courseName,setCourseName]=useState(null)
   const { user,setUser } = useContext(UserContext)
+  const [faculty,setFaculty]=useState([])
   
     useEffect(()=>{
       async function getUser()
@@ -39,6 +40,16 @@ export const Home = () => {
         setError("Some error occured")
         setIsLoading(false)
       })
+  },[])
+
+  useEffect(()=>{
+    axios.get(`http://localhost:5000/home/view/Faculty`).then(res=>{
+          setFaculty(res.data)
+        })
+      .catch(e=>{
+          console.log(e)
+          alert("Problem getting data")
+      });
   },[])
 
   const handleCourseSubmit = (event) => {
@@ -170,7 +181,7 @@ export const Home = () => {
               (
                 courses.map((item)=>{
                 return(
-                  <Card item={item} type={user.type} />
+                  <Card item={item} type={user.type} faculty={faculty} />
                 )
                 }) 
               )

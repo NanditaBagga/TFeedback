@@ -11,6 +11,7 @@ const courseSchema = new Schema({
     type:Date,
     default:Date.now
   },
+  SubAdmin:String,
   messages:[{
     title:String,
     from:String,
