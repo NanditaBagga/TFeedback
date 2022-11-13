@@ -9,7 +9,7 @@
     overflow-x: auto;
 }
 
-.container{
+.my-container{
     display: flex;
     flex-direction: column;
     background-color: rgba(250, 250, 250, 0.45);

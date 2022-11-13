@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext,useRef } from 'react'
 import { Link } from 'react-router-dom';
 import "../css/home.css";
 import axios from 'axios';
@@ -13,6 +13,24 @@ export const Home = () => {
   const [addCourse,setAddCourse]=useState(false)
   const [courseName,setCourseName]=useState(null)
   const { user } = useContext(UserContext)
+  
+  const response=useRef([])
+
+    useEffect(()=>{
+      async function getUser()
+      {
+        console.log("In functions")
+        const status=localStorage.getItem("loginStatus")
+        console.log(status)
+        if(status)
+        {
+          console.log("In status")
+          response.current=JSON.parse(localStorage.getItem("login"))
+          user.current=response.current
+        }
+      }
+    getUser()
+  },[])
 
   useEffect(()=>{
     setIsLoading(true)
@@ -59,7 +77,7 @@ export const Home = () => {
     <>
     <body>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"></link>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossOrigin="anonymous"></link>
     </body>
     
     <div className="App">
@@ -70,7 +88,14 @@ export const Home = () => {
             <span class="navbar-toggler-icon"></span>
           </button>
         </div>
-        <i class="material-icons icon-styling pe-2">account_circle</i>
+        <btn for="profile"><i class="material-icons icon-styling pe-2">account_circle</i></btn>
+
+        <select name="profile" id="cars">
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="mercedes">Mercedes</option>
+          <option value="audi">Audi</option>
+        </select>
       </nav>
 
     <div class = "container mt-4">
@@ -132,7 +157,7 @@ export const Home = () => {
 
         <hr />
         
-        {user.type==="Student"?
+        {response.current.type==="Student"?
         (
           <></>
         ):

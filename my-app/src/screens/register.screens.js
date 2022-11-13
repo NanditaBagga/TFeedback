@@ -13,7 +13,7 @@ export const RegisterScreen = () => {
     const [type,setType]=useState("Student")
     const [mobile,setMobile]=useState("")
     const [isLoading,setIsLoading]=useState(false)
-    const { user,setUser } = useContext(UserContext)
+    const { setUser } = useContext(UserContext)
     const [ redirect,setRedirect]=useState(false)
 
     const handleSubmit =async (event) => {
@@ -51,8 +51,9 @@ export const RegisterScreen = () => {
             return
         }
         axios.post("http://localhost:5000/register",data).then(response=>{
+            localStorage.setItem("loginStatus",true)
+            localStorage.setItem("login",JSON.stringify(response.data))
             setIsLoading(false)
-            setUser(response.data)
             setRedirect(true)
             return
         }).catch(e=>{
@@ -73,7 +74,7 @@ export const RegisterScreen = () => {
     return(
         <>
             <div className='login-container'>
-                <div className='container'>
+                <div className='my-container'>
                     <h3 className='title'>TFeedback</h3>
                     <h3 className='title'>Register</h3>
                     <form onSubmit={handleSubmit} onReset={handleReset} >

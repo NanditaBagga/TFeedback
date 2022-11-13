@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react'
-import { UserContext } from '../services/user.context'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import "../css/login.css"
 import axios from 'axios'
@@ -11,7 +10,6 @@ export const LoginScreen = () => {
     const [type,setType]=useState("Student")
     const [key,setKey]=useState("")
     const [isLoading,setIsLoading]=useState(false)
-    const { user,setUser } = useContext(UserContext)
     const [ redirect,setRedirect]=useState(false)
 
     const handleSubmit = (event) => {
@@ -34,8 +32,8 @@ export const LoginScreen = () => {
                 return
             }
             else{
-                setUser(response.data)
-                console.log(user)
+                localStorage.setItem("loginStatus",true)
+                localStorage.setItem("login",JSON.stringify(response.data))
                 setRedirect(true)
                 setIsLoading(false)
                 return
@@ -56,7 +54,7 @@ export const LoginScreen = () => {
     return(
         <>
         <div className='login-container'>
-            <div className='container'>
+            <div className='my-container'>
                 <h3 className='title'>TFeedback</h3>
                 <h3 className='title'>Login</h3>
                 <form onSubmit={handleSubmit} onReset={handleReset} >

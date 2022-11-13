@@ -1,4 +1,4 @@
-import React,{ useEffect, useState, useContext} from 'react'
+import React,{ useEffect, useState, useContext, useRef} from 'react'
 import { useParams } from "react-router-dom"
 import "../css/feedback.css"
 import axios from 'axios'
@@ -11,7 +11,28 @@ export const Feedback = () => {
   const [message,setMessage]=useState("")
   const [allMessages,setAllMessages]=useState([])
   const { user }=useContext(UserContext)
-  const { name,type }=user
+  
+  const tempUser=useRef()
+  const name=useRef()
+  const type=useRef()
+
+  useEffect(()=>{
+    async function getUser()
+    {
+      console.log("In functions")
+      const status=localStorage.getItem("loginStatus")
+      console.log(status)
+      if(status)
+      {
+        console.log("In status")
+        tempUser.current=JSON.parse(localStorage.getItem("login"))
+        user.current=tempUser.current
+        name.current=tempUser.current.name
+        type.current=tempUser.current.type
+      }
+    }
+  getUser()
+},[])
 
   const { id } = useParams()
   useEffect(()=>{
@@ -21,7 +42,6 @@ export const Feedback = () => {
     })
     .catch(e=>{
       console.log(e)
-      setAllMessages({name:"name"})
     });
   },[id])
 
@@ -34,8 +54,8 @@ export const Feedback = () => {
     }
     let data={
       title:message,
-      from:name,
-      userType:type
+      from:name.current,
+      userType:type.current
     }
     axios.post(`http://localhost:5000/home/course/${id}/send`, data).then(response=>{
       console.log(response.data)
@@ -45,7 +65,7 @@ export const Feedback = () => {
       var yyyy = today.getFullYear();
       const time=today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
       today = mm + '/' + dd + '/' + yyyy + " "+ time;
-      setAllMessages([...allMessages,{title:message,date:today,from:name,userType:String(type)}])
+      setAllMessages([...allMessages,{title:message,date:today,from:name.current,userType:String(type.current)}])
       setMessage("")
     }).catch(e=>{
       console.log(e)

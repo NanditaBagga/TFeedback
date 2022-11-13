@@ -19,6 +19,7 @@ export const RegisterCheck = (userName,email,password,type,MobileNo) => {
             return "Error: Only thapar.edu e mail supported!!";
       }
     
+      // eslint-disable-next-line eqeqeq
       if (MobileNo == "") {
         return "Error: Mobile number field empty!!";
       }
