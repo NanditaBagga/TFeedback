@@ -1,6 +1,7 @@
 const router=require("express").Router()
 let Courses=require("../models/courses")
 let Users=require("../models/user")
+let mongoose=require('mongoose')
 
 router.route('/').get((req, res) => {
     Courses.find()
@@ -16,8 +17,8 @@ router.route('/course/:id').get((req,res)=>{
 })
 
 router.route('/add/course').post((req,res)=>{
-    const { title, photo, createdAt, messages } = req.body
-    const newCourse = new Courses({title, photo, createdAt, messages});
+    const { title, photo, createdAt } = req.body
+    const newCourse = new Courses({title, photo, createdAt});
 
   newCourse.save()
     .then(() => res.json('User added!'))
@@ -35,7 +36,7 @@ router.route('/course/:id/send').post((req,res)=>{
     var yyyy = today.getFullYear();
     const time=today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
     today = mm + '/' + dd + '/' + yyyy + " "+ time;
-    Courses.updateOne({_id:ID},{$push:{messages:{title:msg,from:from,userType:userType,date:today}}}).then(response=>{
+    Courses.updateOne({_id:ID},{$push:{messages:{title:msg,from:from,userType:userType,date:today,upvotes:0,upvotesBy:[]}}}).then(response=>{
         res.json('Message added!')
     })
     .catch(e=>{
@@ -52,5 +53,121 @@ router.route('/view/:status').get((req,res)=>{
         res.status(400).json('Error: ' + e)
     })
 })
+
+router.route('/profile/update').post((req,res)=>{
+    const { id,key,value }=req.body
+    if(key==="mobile")
+    {
+        Users.updateOne({_id:id},{$set:{"mobile":value}}).then(response=>{
+            res.json(response)
+        })
+        .catch(e=>{
+            res.status(400).json('Error: ' + e)
+        })
+    }
+    else{
+        Users.updateOne({_id:id},{$set:{"password":value}}).then(response=>{
+            res.json(response)
+        })
+        .catch(e=>{
+            res.status(400).json('Error: ' + e)
+        })
+    }
+})
+
+router.route("/course/:cid/:mid/:name/upvote").post((req,res)=>{
+    const { cid,mid,name } = req.params
+    var id = mongoose.Types.ObjectId(mid);
+    var did=null
+    Courses.findById({_id:cid,messages:{$elemMatch:{_id:mid}}}).then(response=>{
+        var msg=null
+        for(let i=0;i<response.messages.length;i++)
+        {
+            if(id.equals(response.messages[i]._id))
+            {
+                msg=response.messages[i]
+                msg.upvotes=msg.upvotes+1
+                msg.upvotesBy.push({name:name})
+                did=response._id
+            }
+        }
+        let data={
+            title:msg.title,
+            from:msg.from,
+            userType:msg.userType,
+            date:msg.date,
+            upvotes:msg.upvotes,
+            upvotesBy:msg.upvotesBy
+        }
+        Courses.findOneAndUpdate({_id:did,messages:{$elemMatch:{_id:mid,date:msg.date}}},
+            {$set:{
+                    "messages.$":data
+            }}
+        ).then(resp=>{
+            res.json("Done")
+        }).catch(e=>{
+            console.log(e)
+            res.json("Error occured")
+            alert("Some error occured")
+        })
+
+    }).catch(e=>{
+        console.log(e)
+        res.json("Error occured")
+        alert("Some error occured")
+    })
+})
+
+router.route("/course/:cid/:mid/:name/downvote").post((req,res)=>{
+    const { cid,mid,name } = req.params
+    Courses.findById({_id:cid,messages:{$elemMatch:{_id:mid}}}).then(response=>{
+        var msg=null
+        var did=null
+        var id = mongoose.Types.ObjectId(mid);
+        for(let i=0;i<response.messages.length;i++)
+        {
+            if(id.equals(response.messages[i]._id))
+            {
+                msg=response.messages[i]
+                msg.upvotes=msg.upvotes-1
+                did=response._id
+            }
+        }
+        
+        for(let i=0;i<msg.upvotesBy.length;i++)
+        {
+            if(msg.upvotesBy[i].name==name)
+            {
+                msg.upvotesBy.splice(i,1)
+                break
+            }
+        }
+        let data={
+            title:msg.title,
+            from:msg.from,
+            userType:msg.userType,
+            date:msg.date,
+            upvotes:msg.upvotes,
+            upvotesBy:msg.upvotesBy
+        }
+        Courses.findOneAndUpdate({_id:did,messages:{$elemMatch:{_id:mid,date:msg.date}}},
+            {$set:{
+                    "messages.$":data
+            }}
+        ).then(resp=>{
+            res.json("Done")
+        }).catch(e=>{
+            console.log(e)
+            res.json("Error occured")
+            alert("Some error occured")
+        })
+
+    }).catch(e=>{
+        console.log(e)
+        res.json("Error occured")
+        alert("Some error occured")
+    })
+})
+
 
 module.exports = router;

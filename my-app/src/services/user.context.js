@@ -1,10 +1,10 @@
-import React, {createContext,useRef} from 'react'
+import React, {createContext,useState} from 'react'
 
 export const UserContext = createContext()
 
 export const UserContextProvider = ({children}) => {
 
-    const user=useRef()
+    const [user,setUser]=useState(null)
 
     /*useEffect(()=>{
         if(!isMounted.current)
@@ -26,7 +26,7 @@ export const UserContextProvider = ({children}) => {
     },[user])*/
 
     return(
-        <UserContext.Provider value={{user}}>
+        <UserContext.Provider value={{user,setUser}}>
             {children}
         </UserContext.Provider>
     )

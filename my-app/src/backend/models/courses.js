@@ -17,7 +17,11 @@ const courseSchema = new Schema({
     userType:String,
     date:{
       type:String
-    }
+    },
+    upvotes:Number,
+    upvotesBy:[{
+        name:String
+      }]
   }]
 });
 

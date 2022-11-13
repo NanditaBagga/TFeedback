@@ -1,13 +1,14 @@
-.container{
+.Container{
     display: flex;
     flex-direction: column;
     background-color: rgba(200, 200, 200, 0.45);
     height: 80%;
     width:60%;
     margin-top: 2%;
+    margin-left: 20%;
 }
 
-.text{
+.Text{
     font-size: larger;
     font-weight: 500;
     margin: 5% 0 0 0

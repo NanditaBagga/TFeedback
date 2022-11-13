@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext,useRef } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import "../css/home.css";
 import axios from 'axios';
@@ -12,21 +12,16 @@ export const Home = () => {
   const [courses,setCourses]=useState([])
   const [addCourse,setAddCourse]=useState(false)
   const [courseName,setCourseName]=useState(null)
-  const { user } = useContext(UserContext)
+  const { user,setUser } = useContext(UserContext)
   
-  const response=useRef([])
-
     useEffect(()=>{
       async function getUser()
       {
-        console.log("In functions")
         const status=localStorage.getItem("loginStatus")
         console.log(status)
         if(status)
         {
-          console.log("In status")
-          response.current=JSON.parse(localStorage.getItem("login"))
-          user.current=response.current
+          setUser(JSON.parse(localStorage.getItem("login")))
         }
       }
     getUser()
@@ -56,8 +51,7 @@ export const Home = () => {
     let courseRef={
       title: courseName,
       photo:"Some photo",
-      createdAt:new Date(),
-      messages:{}
+      createdAt:new Date()
     }
     axios.post('http://localhost:5000/home/add/course', courseRef).then(response=>{
       console.log(response.data)
@@ -71,6 +65,30 @@ export const Home = () => {
       console.log(e)
     })
     
+  }
+
+  const handleDropdown = () => {
+    let x=document.getElementById("header-dropdown-options")
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
+  const handleLogOut = () => {
+    setUser(null)
+    localStorage.setItem("loginStatus",false)
+    localStorage.setItem("loginStatus",null)
+  }
+
+  if(!user)
+  {
+    return(
+      <div>
+        <h5 style={{textAlign:"center"}}>Loading...</h5>
+      </div>
+    )
   }
 
   return (
@@ -88,14 +106,19 @@ export const Home = () => {
             <span class="navbar-toggler-icon"></span>
           </button>
         </div>
-        <btn for="profile"><i class="material-icons icon-styling pe-2">account_circle</i></btn>
-
-        <select name="profile" id="cars">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
-        </select>
+        <div style={{display:'flex',flexDirection:"column"}}>
+        <button type='button' onClick={handleDropdown} style={{backgroundColor:"#e3f2fd", border:"none"}} ><i class="material-icons icon-styling pe-2">account_circle</i></button>
+        <div id="header-dropdown-options" style={{display:"none"}}>
+            <h5 className='dropdown-text'>{user.name}</h5>
+            <Link to={`/home/profile/${user._id}`}>
+              <button className='dropdown-btn' type='button'>My Profile</button>
+            </Link>
+            <Link to='/'>
+              <button className='dropdown-btn' onClick={handleLogOut} type='button'>Log Out</button>
+            </Link>
+          </div>
+          </div>
+        
       </nav>
 
     <div class = "container mt-4">
@@ -147,7 +170,7 @@ export const Home = () => {
               (
                 courses.map((item)=>{
                 return(
-                  <Card item={item} />
+                  <Card item={item} type={user.type} />
                 )
                 }) 
               )
@@ -157,7 +180,7 @@ export const Home = () => {
 
         <hr />
         
-        {response.current.type==="Student"?
+        {user.type==="Student"?
         (
           <></>
         ):

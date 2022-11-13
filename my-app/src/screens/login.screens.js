@@ -54,7 +54,7 @@ export const LoginScreen = () => {
     return(
         <>
         <div className='login-container'>
-            <div className='my-container'>
+            <div className='My-container'>
                 <h3 className='title'>TFeedback</h3>
                 <h3 className='title'>Login</h3>
                 <form onSubmit={handleSubmit} onReset={handleReset} >

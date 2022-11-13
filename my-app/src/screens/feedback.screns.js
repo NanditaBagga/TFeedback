@@ -1,4 +1,5 @@
-import React,{ useEffect, useState, useContext, useRef} from 'react'
+import React,{ useEffect, useState, useContext} from 'react'
+import { Link } from 'react-router-dom'
 import { useParams } from "react-router-dom"
 import "../css/feedback.css"
 import axios from 'axios'
@@ -10,25 +11,16 @@ export const Feedback = () => {
   const [title,setTitle]=useState(null)
   const [message,setMessage]=useState("")
   const [allMessages,setAllMessages]=useState([])
-  const { user }=useContext(UserContext)
-  
-  const tempUser=useRef()
-  const name=useRef()
-  const type=useRef()
+  const { user, setUser }=useContext(UserContext)
 
   useEffect(()=>{
     async function getUser()
     {
-      console.log("In functions")
       const status=localStorage.getItem("loginStatus")
       console.log(status)
       if(status)
       {
-        console.log("In status")
-        tempUser.current=JSON.parse(localStorage.getItem("login"))
-        user.current=tempUser.current
-        name.current=tempUser.current.name
-        type.current=tempUser.current.type
+        setUser(JSON.parse(localStorage.getItem("login")))
       }
     }
   getUser()
@@ -39,11 +31,32 @@ export const Feedback = () => {
     axios.get(`http://localhost:5000/home/course/${id}`).then(res=>{
       setTitle(res.data.title)
       setAllMessages(res.data.messages)
+        var tempArr=res.data.messages
+        function compare(a,b){
+            if(a.upvotes>b.upvotes){
+              return -1;
+            }
+            if(a.cost<b.cost){
+              return 1;
+            }
+            return 0;
+          }  
+        tempArr.sort(compare);
+        setAllMessages(tempArr)
     })
     .catch(e=>{
       console.log(e)
     });
   },[id])
+
+  if(!user)
+  {
+    return(
+      <div>
+        <h5 style={{textAlign:"center"}}>Loading...</h5>
+      </div>
+    )
+  }
 
   const handleMsgSubmit = (event) => {
     event.preventDefault()
@@ -54,23 +67,30 @@ export const Feedback = () => {
     }
     let data={
       title:message,
-      from:name.current,
-      userType:type.current
+      from:user.name,
+      userType:user.type
     }
     axios.post(`http://localhost:5000/home/course/${id}/send`, data).then(response=>{
-      console.log(response.data)
-      var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0');
-      var yyyy = today.getFullYear();
-      const time=today.getHours()+":"+today.getMinutes()+":"+today.getSeconds();
-      today = mm + '/' + dd + '/' + yyyy + " "+ time;
-      setAllMessages([...allMessages,{title:message,date:today,from:name.current,userType:String(type.current)}])
-      setMessage("")
+      window.location.reload()
     }).catch(e=>{
       console.log(e)
       setMessage("")
     })
+  }
+
+  const handleDropdown = () => {
+    let x=document.getElementById("header-dropdown-options")
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
+  const handleLogOut = () => {
+    setUser(null)
+    localStorage.setItem("loginStatus",false)
+    localStorage.setItem("loginStatus",null)
   }
 
     return(
@@ -92,7 +112,18 @@ export const Feedback = () => {
                     <h5 style={{fontWeight:"normal", marginTop:"5%"}} className="navbar-brand" aria-current="page" >{title}</h5>
                   </li>
                 </ul>
-                <i class="material-icons icon-styling">account_circle</i>
+                <div style={{display:'flex',flexDirection:"column"}}>
+        <button type='button' onClick={handleDropdown} style={{backgroundColor:"#e3f2fd", border:"none"}} ><i class="material-icons icon-styling pe-2">account_circle</i></button>
+        <div id="header-dropdown-options" style={{display:"none"}}>
+            <h5 className='dropdown-text'>{user.name}</h5>
+            <Link to={`/home/profile/${user._id}`}>
+              <button className='dropdown-btn' type='button'>My Profile</button>
+            </Link>
+            <Link to='/'>
+              <button className='dropdown-btn' onClick={handleLogOut} type='button'>Log Out</button>
+            </Link>
+          </div>
+          </div>
               </div>
             </div>   
           </nav>
@@ -102,7 +133,7 @@ export const Feedback = () => {
           (
               allMessages.map(item=>{
                 return(
-                  <MessageCard msg={item}/>
+                  <MessageCard msg={item} name={user.name} courseID={id} setAllMessages={setAllMessages}/>
                 )
               })  
           ):
