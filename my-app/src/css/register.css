@@ -10,11 +10,12 @@
 }
 
 .my-container{
+    margin-top: 5%;
+    background-color: rgba(250, 250, 250, 0.45);
     display: flex;
     flex-direction: column;
-    background-color: rgba(250, 250, 250, 0.45);
-    height: 100vh;
-    width:40%;
+    min-height: 100vh;
+    width:40%
 }
 
 .title{

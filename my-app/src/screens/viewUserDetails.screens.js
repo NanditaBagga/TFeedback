@@ -100,7 +100,7 @@ export const UserDetails = () => {
         <div class = "container">
             <img src={img} id = "background-img" alt="Missing source" />
         <div>
-            <img src={userImg} id = "profile-pic" alt={userDetail.name}/>
+            <img src={userDetail.image} id = "profile-pic" alt={userDetail.name}/>
         </div>
         <div id = "faculty-info">
             <div id = "faculty-name">

@@ -94,7 +94,7 @@ export const ViewScreen = () => {
                             <Link to={`/home/view/${item.type}/${item._id}`} style={{textDecoration:"none",color:"black"}}>
                                 <div key={key} className='user-container'>
                                     
-                                        <img src={img} style={{height:150,width:150,marginRight:100}} alt={`${item.name}`} />
+                                        <img src={item.image} style={{height:150,width:150,marginRight:100}} alt={`${item.name}`} />
                                         <div className='details-container'>
                                         <h4 className='view-text'>{item.name}</h4>
                                         {item.type==="Student"?

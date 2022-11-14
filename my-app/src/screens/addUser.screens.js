@@ -4,6 +4,7 @@ import "../css/addUser.css"
 import { RegisterCheck } from '../services/registerCheck.services'
 import axios from 'axios'
 import { UserContext } from '../services/user.context'
+import { StoreImage } from '../services/firebase.services'
 
 export const AddUser = () => {
     const { status }=useParams()
@@ -17,6 +18,7 @@ export const AddUser = () => {
     const [bio,setBio]=useState("")
     const [designation,setDesignation]=useState("")
     const [specialization,setSpecialization]=useState("")
+    const [image,setImage]=useState(null)
 
     useEffect(()=>{
         async function getUser()
@@ -53,6 +55,7 @@ export const AddUser = () => {
 
     const handleSubmit =async (event) => {
         var flag=0
+        var URL=null
         event.preventDefault()
         const result=RegisterCheck(name,email,password,status,mobile,specialization,bio,designation)
         if(result!==true)
@@ -60,18 +63,19 @@ export const AddUser = () => {
             alert(result)
             return
         }
-        setIsLoading(true)
-        let data={
-            name:name,
-            password:password,
-            email:email,
-            mobile:mobile,
-            type:status,
-            key:"",
-            specialzation:specialization,
-            bio:bio,
-            designation:designation
+        if(!image)
+        {
+            alert("No image uploaded")
+            return
         }
+        const ext=image.type
+        // eslint-disable-next-line eqeqeq
+        if(ext!="image/jpeg"&&ext!="image/png"&&ext!="image/jpg")
+        {
+            alert("Only .jpg, .jpeg, .png images are supported")
+            return
+        }
+        setIsLoading(true)
         await axios.get(`http://localhost:5000/register/${name}`).then(response=>{
             if(response.data!=="Ok")
             {
@@ -88,6 +92,23 @@ export const AddUser = () => {
             setIsLoading(false)
             return
         }
+        await StoreImage(image).then(url=>{
+            URL=url
+        }).catch(e=>{
+            console.log(e)
+        })
+        let data={
+            name:name,
+            password:password,
+            email:email,
+            mobile:mobile,
+            type:status,
+            key:"",
+            specialzation:specialization,
+            bio:bio,
+            designation:designation,
+            image:URL
+        }
         axios.post("http://localhost:5000/register",data).then(response=>{
             setIsLoading(false)
             alert("User added")
@@ -98,6 +119,7 @@ export const AddUser = () => {
             setBio("")
             setDesignation("")
             setSpecialization("")
+            setImage(null)
             return
         }).catch(e=>{
             console.log(e)
@@ -182,6 +204,8 @@ export const AddUser = () => {
                        
                         <h4 className='Text'>Bio</h4>
                         <input value={bio} onChange={(text)=>setBio(text.target.value)} className='input' type={"text"} placeholder='Fill bio' />
+                        <h4 className='Text'>Image</h4>
+                        <input onChange={(text)=>setImage(text.target.files[0])} className='input' type={"file"} />
                         <br />
                         {isLoading?
                         (

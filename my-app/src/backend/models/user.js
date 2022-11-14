@@ -18,6 +18,7 @@ const userSchema = new Schema({
   specialzation:String,
   bio:String,
   designation:String,
+  image:String,
   createdAt:{
     type:Date,
     default:Date.now

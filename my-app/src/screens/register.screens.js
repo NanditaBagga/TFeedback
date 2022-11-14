@@ -3,6 +3,7 @@ import { RegisterCheck } from '../services/registerCheck.services'
 import "../css/register.css"
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import { StoreImage } from '../services/firebase.services'
 
 export const RegisterScreen = () => {
 
@@ -16,34 +17,38 @@ export const RegisterScreen = () => {
     const [specialization,setSpecialization]=useState("")
     const [designation,setDesignaton]=useState("")
     const [ redirect,setRedirect]=useState(false)
+    const [image,setImage]=useState(null)
 
     let navigate=useNavigate()
 
     const handleSubmit =async (event) => {
         var flag=0
+        var URL=null
         event.preventDefault()
-        const result=RegisterCheck(name,email,password,type,mobile,specialization,bio,designation)
+        /*const result=RegisterCheck(name,email,password,type,mobile,specialization,bio,designation)
         if(result!==true)
         {
             alert(result)
             return
+        }*/
+        if(!image)
+        {
+            alert("No image uploaded")
+            return
+        }
+        const ext=image.type
+        // eslint-disable-next-line eqeqeq
+        if(ext!="image/jpeg"&&ext!="image/png"&&ext!="image/jpg")
+        {
+            alert("Only .jpg, .jpeg, .png images are supported")
+            return
         }
         setIsLoading(true)
-        let data={
-            name:name,
-            password:password,
-            email:email,
-            mobile:mobile,
-            type:type,
-            key:"",
-            specialzation:specialization,
-            bio:bio,
-            designation:designation
-        }
         await axios.get(`http://localhost:5000/register/${name}`).then(response=>{
             if(response.data!=="Ok")
             {
                 alert(response.data)
+                setIsLoading(false)
                 flag=1
                 return
             }
@@ -55,6 +60,23 @@ export const RegisterScreen = () => {
         {
             setIsLoading(false)
             return
+        }
+        await StoreImage(image).then(url=>{
+            URL=url
+        }).catch(e=>{
+            console.log(e)
+        })
+        let data={
+            name:name,
+            password:password,
+            email:email,
+            mobile:mobile,
+            type:type,
+            key:"",
+            specialzation:specialization,
+            bio:bio,
+            designation:designation,
+            image:URL
         }
         axios.post("http://localhost:5000/register",data).then(response=>{
             localStorage.setItem("loginStatus",true)
@@ -120,6 +142,8 @@ export const RegisterScreen = () => {
                                 </>
                             )
                         }
+                        <h4 className='form-text'>Image</h4>
+                        <input onChange={(text)=>setImage(text.target.files[0])} className='form-input' type={"file"} />
                         <br />
                         {isLoading?
                         (
