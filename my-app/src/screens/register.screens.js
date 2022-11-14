@@ -1,9 +1,8 @@
-import React, {useState,useContext} from 'react'
+import React, {useState} from 'react'
 import { RegisterCheck } from '../services/registerCheck.services'
 import "../css/register.css"
 import axios from 'axios'
-import { Link } from 'react-router-dom'
-import { UserContext } from '../services/user.context'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const RegisterScreen = () => {
 
@@ -17,6 +16,8 @@ export const RegisterScreen = () => {
     const [specialization,setSpecialization]=useState("")
     const [designation,setDesignaton]=useState("")
     const [ redirect,setRedirect]=useState(false)
+
+    let navigate=useNavigate()
 
     const handleSubmit =async (event) => {
         var flag=0
@@ -127,12 +128,7 @@ export const RegisterScreen = () => {
                         (
                             redirect?
                             (
-                                <div style={{display:"flex", alignItems:"center",justifyContent:"center"}}>
-                                    <h4 style={{textAlign:"center"}}>Success!!</h4>
-                                    <Link to='/home'>
-                                        <button type={"button"} className='form-btn'>Ok</button>
-                                    </Link>
-                                </div>
+                                navigate('/home')
                             ):
                             (
                                 <>

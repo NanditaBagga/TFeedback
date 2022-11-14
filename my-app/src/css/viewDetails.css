@@ -2,7 +2,7 @@
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    margin-top: 7.5%;
+    margin-top: 5%;
     border: 2px solid lightgrey;
 }
 #background-img{

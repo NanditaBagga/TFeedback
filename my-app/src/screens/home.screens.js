@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import "../css/home.css";
 import axios from 'axios';
@@ -6,7 +6,6 @@ import { Card } from "../components/courseCard.component"
 import { UserContext } from '../services/user.context';
 
 var coursesArray=[]
-//var coursesArrayLength=null
 
 export const Home = () => {
 
@@ -17,7 +16,6 @@ export const Home = () => {
   const [courseName,setCourseName]=useState(null)
   const { user,setUser } = useContext(UserContext)
   const [faculty,setFaculty]=useState([])
-  //const [coursesArray,setCoursesArray]=useState([])
   const [coursesArrayLength,setCoursesArrayLength]=useState(null)
 
     useEffect(()=>{

@@ -49,7 +49,7 @@ export const Card = ({ item,type,faculty, setCourses }) =>{
     const img=images[imgInd]
     return(
         <div class="card mt-2" style={{width: "50%"}} key={item.title}>
-            <img src={img} class="card-img-top" alt={item.title} />
+            <img src={img4} class="card-img-top" alt={item.title} />
             <div class="card-body">
                 <h5 class="card-title">{item.title}</h5>
                 <Link to={`/home/course/${item._id}`}>

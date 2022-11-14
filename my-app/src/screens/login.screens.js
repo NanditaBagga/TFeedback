@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import "../css/login.css"
 import axios from 'axios'
 
@@ -11,6 +11,8 @@ export const LoginScreen = () => {
     const [key,setKey]=useState("")
     const [isLoading,setIsLoading]=useState(false)
     const [ redirect,setRedirect]=useState(false)
+
+    let navigate=useNavigate()
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -86,12 +88,7 @@ export const LoginScreen = () => {
                         (
                             redirect?
                             (
-                                <div style={{display:"flex", alignItems:"center",justifyContent:"center"}}>
-                                    <h4 style={{textAlign:"center"}}>Success!!</h4>
-                                    <Link to='/home'>
-                                        <button type={"button"} className='form-btn'>Ok</button>
-                                    </Link>
-                                </div>
+                                navigate('/home')
                             ):
                             (
                                 <>

@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom'
 import { UserContext } from '../services/user.context'
 import "../css/viewDetails.css"
 import img from "../assets/images/background.jpg"
+import userImg from "../assets/images/profile-1.jpg"
 
 export const UserDetails = () => {
 
@@ -99,7 +100,7 @@ export const UserDetails = () => {
         <div class = "container">
             <img src={img} id = "background-img" alt="Missing source" />
         <div>
-            <img id = "profile-pic" alt={userDetail.name}/>
+            <img src={userImg} id = "profile-pic" alt={userDetail.name}/>
         </div>
         <div id = "faculty-info">
             <div id = "faculty-name">
