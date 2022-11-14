@@ -12,6 +12,12 @@ export const ProfileScreen = () => {
     const [ mobile,setMobile ]=useState("")
     const [updatePass,setUpdatePass]=useState(false)
     const [updateMobile,setUpdateMobile]=useState(false)
+    const [bio,setBio]=useState("")
+    const [addBio,setAddBio]=useState(false)
+    const [desigation,setDesigation]=useState("")
+    const [addDesignation,setAddDesignation]=useState(false)
+    const [special,setSpecial]=useState("")
+    const [addSpecial,setAddSpecial]=useState(false)
 
     useEffect(()=>{
         async function getUser()
@@ -25,6 +31,18 @@ export const ProfileScreen = () => {
         }
       getUser()
     },[])
+
+    const UpdateUser = () => {
+        axios.get(`http://localhost:5000/home/view/${user.type}/${user._id}`).then(res=>{
+            console.log(res.data[0])
+            setUser(res.data[0])
+            localStorage.setItem("login",JSON.stringify(res.data[0]))
+        })
+        .catch(e=>{
+            console.log(e)
+            alert("Problem completing the operation")
+        });
+    }
 
     if(!user)
     {
@@ -56,7 +74,7 @@ export const ProfileScreen = () => {
             }
             axios.post('http://localhost:5000/home/profile/update',data)
             .then(response => {
-                setUser({...user,"password":password})
+                UpdateUser()
                 setPassword("")
                 setUpdatePass(false)
             })
@@ -82,10 +100,9 @@ export const ProfileScreen = () => {
                 key:key,
                 value:mobile
             }
-            console.log("Geye")
             axios.post('http://localhost:5000/home/profile/update',data)
             .then(response => {
-                setUser({...user,"mobile":mobile})
+                UpdateUser()
                 setMobile("")
                 setUpdateMobile(false)
             })
@@ -94,8 +111,86 @@ export const ProfileScreen = () => {
                 alert("Some error occured")
             })
         }
+        else if(key==="special")
+        {
+            if(special==="") 
+            {
+                setAddSpecial(false)
+                return
+            } 
+            if(special==user.specialzation) {
+                setAddSpecial(false)
+                return
+            } 
+            let data={
+                id:user._id,
+                key:key,
+                value:special
+            }
+            axios.post('http://localhost:5000/home/profile/update',data)
+            .then(response => {
+                UpdateUser()
+                setSpecial("")
+                setAddSpecial(false)
+            })
+            .catch(error => {
+                console.log(error)
+                alert("Some error occured")
+            })
+        }
+        else if(key==="Bio")
+        {
+            if(bio==="") {
+                setAddBio(false)
+                return
+            }
+            if(bio==user.bio) {
+                setAddBio(false)
+                return
+            }
+            let data={
+                id:user._id,
+                key:key,
+                value:bio
+            }
+            axios.post('http://localhost:5000/home/profile/update',data)
+            .then(response => {
+                UpdateUser()
+                setBio("")
+                setAddBio(false)
+            })
+            .catch(error => {
+                console.log(error)
+                alert("Some error occured")
+            })
+        }
+        else if(key==="designation")
+        {
+            if(desigation==="") {
+                setAddDesignation(false)
+                return
+            }
+            if(desigation==user.designation)  {
+                setAddDesignation(false)
+                return
+            }
+            let data={
+                id:user._id,
+                key:key,
+                value:desigation
+            }
+            axios.post('http://localhost:5000/home/profile/update',data)
+            .then(response => {
+                UpdateUser()
+                setDesigation("")
+                setAddDesignation(false)
+            })
+            .catch(error => {
+                console.log(error)
+                alert("Some error occured")
+            })
+        }
     }
-
     const handleDropdown = () => {
         let x=document.getElementById("header-dropdown-options")
         if (x.style.display === "none") {
@@ -145,7 +240,7 @@ export const ProfileScreen = () => {
 
          <h2 style={{textAlign:"center",marginTop:"2%",marginBottom:"3%"}}>My Profile</h2>
          <div style={{display:"flex",justifyContent:"center",alignContent:"center"}}>
-        <div className='my-container'>
+        <div className='profile-container'>
             <div style={{display:"flex",flexDirection:"row"}}>
                 <div className='col1'>
                     <h4 className='my-text'>Name</h4>
@@ -235,7 +330,103 @@ export const ProfileScreen = () => {
                 <div className='col2'>
                     <h5 style={{cursor:"not-allowed"}} class="btn btn-secondary">Change</h5>
                 </div>
-        </div>
+            </div>
+            {addSpecial?
+            (
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    <div className='col1'>
+                        <h4 className='my-text'>Specialization</h4>
+                    </div>
+                    <div className='col1'>
+                    <input onChange={(text)=>setSpecial(text.target.value)} type={"text"} value={special} className='my-text' />
+                    </div>
+                    <div className='col2'>
+                        <h5 class="btn btn-secondary" onClick={()=>handleUpdate("special")}>Done</h5>
+                    </div>
+                </div>
+            ):
+            (
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    <div className='col1'>
+                        <h4 className='my-text'>Specialization</h4>
+                    </div>
+                    <div className='col1'>
+                        <h4 className='my-text'>{user.specialzation}</h4>
+                    </div>
+                    <div className='col2'>
+                        <h5 onClick={()=>setAddSpecial(true)} class="btn btn-secondary">Change</h5>
+                    </div>
+                </div>
+            )}
+            {addBio?
+            (
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    <div className='col1'>
+                        <h4 className='my-text'>Bio</h4>
+                    </div>
+                    <div className='col1'>
+                        <input onChange={(text)=>setBio(text.target.value)} type={"text"} value={bio} className='my-text' />
+                    </div>
+                    <div className='col2'>
+                        <h5 class="btn btn-secondary" onClick={()=>handleUpdate("Bio")}>Done</h5>
+                    </div>
+                </div>
+            ):
+            (
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    <div className='col1'>
+                        <h4 className='my-text'>Bio</h4>
+                    </div>
+                    <div className='col1'>
+                        <h4 className='my-text'>{user.bio}</h4>
+                    </div>
+                    <div className='col2'>
+                        <h5 class="btn btn-secondary" onClick={()=>setAddBio(true)}>Change</h5>
+                    </div>
+                </div>
+            )}
+            {addDesignation?
+            (
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    {user.type==="Student"?
+                    (
+                        <div className='col1'>
+                            <h4 className='my-text'>Semester</h4>
+                        </div>
+                    ):(
+                        <div className='col1'>
+                            <h4 className='my-text'>Desigation</h4>
+                        </div>
+                    )}
+                    <div className='col1'>
+                        <input onChange={(text)=>setDesigation(text.target.value)} type={"text"} value={desigation} className='my-text' />
+                    </div>
+                    <div className='col2'>
+                        <h5 onClick={()=>handleUpdate("designation")} class="btn btn-secondary">Done</h5>
+                    </div>
+                </div>
+            ):
+            (
+                <div style={{display:"flex",flexDirection:"row"}}>
+                    {user.type==="Student"?
+                    (
+                        <div className='col1'>
+                            <h4 className='my-text'>Semester</h4>
+                        </div>
+                    ):(
+                        <div className='col1'>
+                            <h4 className='my-text'>Desigation</h4>
+                        </div>
+                    )}
+                    <div className='col1'>
+                        <h4 className='my-text'>{user.designation}</h4>
+                    </div>
+                    <div className='col2'>
+                        <h5 onClick={()=>setAddDesignation(true)} class="btn btn-secondary">Change</h5>
+                    </div>
+                </div>
+            )}
+            
         </div>
     </div>
     </div>

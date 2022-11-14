@@ -1,0 +1,43 @@
+.container{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    margin-top: 7.5%;
+    border: 2px solid lightgrey;
+}
+#background-img{
+    height: 10rem;
+    width: 100%;
+}
+
+#profile-pic{
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    margin-top: -5%;
+    margin-left: 5%;
+}
+.icon-styling{
+    font-size:32px; 
+    font-weight: 200;
+}
+#faculty-info{
+    margin-left: 40%;
+    display: flex;
+    flex:1;
+}
+.faculty-details{
+    margin-top: 5%;
+}
+#faculty-name{
+    display: flex;
+    flex:0.8;
+}
+#faculty-email{
+    display: flex;
+    flex:0.1
+}
+#faculty-phone{
+    display: flex;
+    flex:0.1
+}

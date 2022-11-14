@@ -6,6 +6,7 @@ import { RegisterScreen } from "./register.screens"
 import { ViewScreen } from "./viewUser.screens"
 import { AddUser } from "./addUser.screens"
 import { ProfileScreen } from "./profile.screens"
+import { UserDetails } from "./viewUserDetails.screens"
 
 export const App = () => {
     return(
@@ -15,8 +16,9 @@ export const App = () => {
             <Route path="/home" element={<Home />} ></Route>
             <Route exact path="/home/view/:status" element={<ViewScreen />} ></Route>
             <Route exact path="/home/add/:status" element={<AddUser />} ></Route>
-            <Route exact path="home/course/:id" element={<Feedback />}></Route>
+            <Route exact path="home/course/:id/" element={<Feedback />}></Route>
             <Route exact path="home/profile/:id" element={<ProfileScreen />}></Route>
+            <Route exact path="home/view/:type/:id" element={<UserDetails />}></Route>
         </Routes>
     )
 }

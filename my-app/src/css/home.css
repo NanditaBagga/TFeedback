@@ -17,12 +17,11 @@
   font-size:32px; 
   font-weight: 200;
 }
-.card-container{
+.my-card-container{
   display: flex;
   flex-direction: row;
   width:100%;
-  overflow: scroll;
-  justify-content: center;
+  overflow-x: auto;
 }
 
 #header-dropdown-options{

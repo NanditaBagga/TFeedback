@@ -1,4 +1,4 @@
-export const RegisterCheck = (userName,email,password,type,MobileNo) => {
+export const RegisterCheck = (userName,email,password,type,MobileNo,specialzation,bio,designation) => {
     if (userName === "") {
         return "Error: User field empty!!";
       }
@@ -56,6 +56,19 @@ export const RegisterCheck = (userName,email,password,type,MobileNo) => {
       }
       else {
         return "Error: Password should contain atleast one uppercase letter!!";
+      }
+
+      if(designation==="")
+      {
+        return "Error: Desigation/Sem field empty!!"
+      }
+      if(bio==="")
+      {
+        return "Error: Fill your bio"
+      }
+      if(specialzation==="")
+      {
+        return "Error: Specialization field empty!!"
       }
     
       return true;

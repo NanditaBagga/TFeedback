@@ -13,13 +13,15 @@ export const RegisterScreen = () => {
     const [type,setType]=useState("Student")
     const [mobile,setMobile]=useState("")
     const [isLoading,setIsLoading]=useState(false)
-    const { setUser } = useContext(UserContext)
+    const [bio,setBio]=useState("")
+    const [specialization,setSpecialization]=useState("")
+    const [designation,setDesignaton]=useState("")
     const [ redirect,setRedirect]=useState(false)
 
     const handleSubmit =async (event) => {
         var flag=0
         event.preventDefault()
-        const result=RegisterCheck(name,email,password,type,mobile)
+        const result=RegisterCheck(name,email,password,type,mobile,specialization,bio,designation)
         if(result!==true)
         {
             alert(result)
@@ -32,7 +34,10 @@ export const RegisterScreen = () => {
             email:email,
             mobile:mobile,
             type:type,
-            key:""
+            key:"",
+            specialzation:specialization,
+            bio:bio,
+            designation:designation
         }
         await axios.get(`http://localhost:5000/register/${name}`).then(response=>{
             if(response.data!=="Ok")
@@ -69,6 +74,9 @@ export const RegisterScreen = () => {
         setType("")
         setMobile("")
         setEmail("")
+        setSpecialization("")
+        setBio("")
+        setDesignaton("")
     }
 
     return(
@@ -93,6 +101,24 @@ export const RegisterScreen = () => {
                             <option value="Faculty">Faculty</option>
                             <option value="Admin">Admin</option>
                         </select>
+                        <h4 className='form-text'>Specialization</h4>
+                        <input value={specialization} onChange={(text)=>setSpecialization(text.target.value)} className='form-input' type={"text"} placeholder='Your specialization' />
+                        <h4 className='form-text'>Describe youself</h4>
+                        <input value={bio} onChange={(text)=>setBio(text.target.value)} className='form-input' type={"text"} placeholder='Your bio' />
+                        {type==="Student"?
+                            (
+                                <>
+                                    <h4 className='form-text'>Current Semester</h4>
+                                    <input value={designation} onChange={(text)=>setDesignaton(text.target.value)} className='form-input' type={"text"} placeholder='Current sem' />
+                                </>
+                            ):
+                            (
+                                <>
+                                    <h4 className='form-text'>Current designation</h4>
+                                    <input value={designation} onChange={(text)=>setDesignaton(text.target.value)} className='form-input' type={"text"} placeholder='Your current designation' />
+                                </>
+                            )
+                        }
                         <br />
                         {isLoading?
                         (

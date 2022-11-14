@@ -15,6 +15,9 @@ const userSchema = new Schema({
   password:String,
   type:String,
   key:String,
+  specialzation:String,
+  bio:String,
+  designation:String,
   createdAt:{
     type:Date,
     default:Date.now

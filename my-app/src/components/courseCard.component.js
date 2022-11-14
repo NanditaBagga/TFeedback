@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import img from "../assets/svg/pattern1.svg"
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import img1 from "../assets/svg/1.svg"
+import img2 from "../assets/svg/2.svg"
+import img3 from "../assets/svg/3.svg"
+import img4 from "../assets/svg/4.svg"
+import img5 from "../assets/svg/5.svg"
 
-export const Card = ({ item,type,faculty }) =>{
+export const Card = ({ item,type,faculty, setCourses }) =>{
 
     const [admin,setAdmin]=useState("")
 
@@ -24,13 +28,25 @@ export const Card = ({ item,type,faculty }) =>{
         }
         axios.post('http://localhost:5000/home/course/SubAdmin', data).then(response=>{
         console.log(response.data)
-        alert("Done")
+        axios.get('http://localhost:5000/home/')
+        .then(response => {
+          setCourses(response.data)
+        })
+        .catch(error => {
+          console.log(error)
+          alert("Some error occured")
+        })
         })
         .catch(e=>{
         console.log(e)
         })
     }
 
+    const images=[
+        img1,img2,img3,img4,img5
+    ]
+    var imgInd=Math.floor(Math.random()*5)
+    const img=images[imgInd]
     return(
         <div class="card mt-2" style={{width: "50%"}} key={item.title}>
             <img src={img} class="card-img-top" alt={item.title} />
@@ -42,7 +58,9 @@ export const Card = ({ item,type,faculty }) =>{
                 {type==="Admin"?
                 (
                     <>
-                    <select class="btn btn-secondary" onChange={(text)=>setAdmin(text.target.value)} style={{marginLeft:"10%",marginBottom:10}} >
+                    <label style={{right:10,position:"absolute"}}>{item.SubAdmin}</label>
+                    <br />
+                    <select id="faculty-select" class="btn btn-secondary" onChange={(text)=>setAdmin(text.target.value)} style={{marginBottom:10}} >
                         {faculty.map((item)=>{
                             const key=item.name
                             return(

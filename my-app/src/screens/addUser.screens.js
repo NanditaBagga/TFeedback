@@ -14,7 +14,9 @@ export const AddUser = () => {
     const [mobile,setMobile]=useState("")
     const [isLoading,setIsLoading]=useState(false)
     const { user, setUser }=useContext(UserContext)
-
+    const [bio,setBio]=useState("")
+    const [designation,setDesignation]=useState("")
+    const [specialization,setSpecialization]=useState("")
 
     useEffect(()=>{
         async function getUser()
@@ -44,12 +46,15 @@ export const AddUser = () => {
         setPassword("")
         setMobile("")
         setEmail("")
+        setBio("")
+        setDesignation("")
+        setSpecialization("")
     }
 
     const handleSubmit =async (event) => {
         var flag=0
         event.preventDefault()
-        const result=RegisterCheck(name,email,password,status,mobile)
+        const result=RegisterCheck(name,email,password,status,mobile,specialization,bio,designation)
         if(result!==true)
         {
             alert(result)
@@ -62,7 +67,10 @@ export const AddUser = () => {
             email:email,
             mobile:mobile,
             type:status,
-            key:""
+            key:"",
+            specialzation:specialization,
+            bio:bio,
+            designation:designation
         }
         await axios.get(`http://localhost:5000/register/${name}`).then(response=>{
             if(response.data!=="Ok")
@@ -87,6 +95,9 @@ export const AddUser = () => {
             setPassword("")
             setMobile("")
             setEmail("")
+            setBio("")
+            setDesignation("")
+            setSpecialization("")
             return
         }).catch(e=>{
             console.log(e)
@@ -152,6 +163,25 @@ export const AddUser = () => {
                         <h4 className='Text'>Password</h4>
                         <input value={password} onChange={(text)=>setPassword(text.target.value)} className='input' type={"password"} placeholder='Fill password' />
                         <h4 className='Text'>Type {status}</h4>
+                        <h4 className='Text'>Specialization</h4>
+                        <input value={specialization} onChange={(text)=>setSpecialization(text.target.value)} className='input' type={"text"} placeholder='Fill specialization' />
+                        {status==="Student"?
+                        (
+                            <>
+                            <h4 className='Text'>Semester</h4>
+                            <input value={designation} onChange={(text)=>setDesignation(text.target.value)} className='input' type={"text"} placeholder='Fill semester' />
+                            </>
+                        ):
+                        (
+                            <>
+                            <h4 className='Text'>Designation</h4>
+                            <input value={designation} onChange={(text)=>setDesignation(text.target.value)} className='input' type={"text"} placeholder='Fill desigantion' />
+                            </>
+                        )
+                        }
+                       
+                        <h4 className='Text'>Bio</h4>
+                        <input value={bio} onChange={(text)=>setBio(text.target.value)} className='input' type={"text"} placeholder='Fill bio' />
                         <br />
                         {isLoading?
                         (

@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import "../css/home.css";
 import axios from 'axios';
 import { Card } from "../components/courseCard.component"
 import { UserContext } from '../services/user.context';
+
+var coursesArray=[]
+//var coursesArrayLength=null
 
 export const Home = () => {
 
@@ -14,12 +17,13 @@ export const Home = () => {
   const [courseName,setCourseName]=useState(null)
   const { user,setUser } = useContext(UserContext)
   const [faculty,setFaculty]=useState([])
-  
+  //const [coursesArray,setCoursesArray]=useState([])
+  const [coursesArrayLength,setCoursesArrayLength]=useState(null)
+
     useEffect(()=>{
       async function getUser()
       {
         const status=localStorage.getItem("loginStatus")
-        console.log(status)
         if(status)
         {
           setUser(JSON.parse(localStorage.getItem("login")))
@@ -33,6 +37,12 @@ export const Home = () => {
     axios.get('http://localhost:5000/home/')
       .then(response => {
         setCourses(response.data)
+        coursesArray=[]
+        for(let i=0;i<response.data.length;i++)
+        {
+          coursesArray.push({title:response.data[i].title,length:response.data[i].messages.length})
+        }
+        setCoursesArrayLength(0)
         setIsLoading(false)
       })
       .catch(error => {
@@ -65,10 +75,19 @@ export const Home = () => {
       createdAt:new Date()
     }
     axios.post('http://localhost:5000/home/add/course', courseRef).then(response=>{
-      console.log(response.data)
       setCourseName(null)
       setAddCourse(false)
-      window.location.reload(false)
+      setIsLoading(true)
+      axios.get('http://localhost:5000/home/')
+        .then(response => {
+          setCourses(response.data)
+          setIsLoading(false)
+        })
+        .catch(error => {
+          console.log(error)
+          setError("Some error occured")
+          setIsLoading(false)
+        })
     })
     .catch(e=>{
       setCourseName(null)
@@ -93,6 +112,15 @@ export const Home = () => {
     localStorage.setItem("loginStatus",null)
   }
 
+  const handleNext = () => {
+    if(coursesArrayLength==courses.length-1)
+    {
+      setCoursesArrayLength(0)
+    }
+    else{
+      setCoursesArrayLength(coursesArrayLength+1)
+    }
+  }
   if(!user)
   {
     return(
@@ -101,7 +129,23 @@ export const Home = () => {
       </div>
     )
   }
-
+  if(!coursesArray.length)
+  {
+    return(
+      <div>
+        <h5 style={{textAlign:"center"}}>Loading...</h5>
+      </div>
+    )
+  }
+  if(coursesArrayLength===null)
+  {
+    return(
+      <div>
+        <h5 style={{textAlign:"center"}}>Loading...</h5>
+      </div>
+    )
+  }
+  
   return (
     <>
     <body>
@@ -147,13 +191,17 @@ export const Home = () => {
               </div>
             </div>
             <div class="col-md-6">
-                <div class="card bg-secondary">
-                  <div class="card-body d-flex flex-row justify-content-between align-items-center">
+                <div class="card bg-secondary" >
+                  <div class="card-body d-flex flex-row justify-content-between align-items-center" >
                     <div>
                         <h5 class="card-title text-white">Number of feedbacks recieved per topic</h5>
                     </div>
-                    <div>
-                        <p class="card-text ps-4 text-white">12</p>
+                    <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
+                      <p style={{fontSize:"large"}} class="card-text ps-4 text-white">{coursesArray[coursesArrayLength].title}</p>
+                      <p style={{fontSize:"large"}} class="card-text ps-4 text-white">{coursesArray[coursesArrayLength].length}</p>
+                       <button onClick={handleNext} style={{border:"none",backgroundColor:"#6C757D"}}>
+                          <i style={{transform:"rotate(180deg)",color:"white",fontSize:"large"}} class="material-icons icon-styling pe-2">arrow_back_ios</i>
+                          </button>
                     </div>                    
                   </div>
                 </div>
@@ -168,7 +216,7 @@ export const Home = () => {
             </div>       
         </div>
         
-        <div className ="card-container">
+        <div className ="my-card-container">
           {isLoading?
           (
             <h3 style={{textAlign:"center"}}>Loading...</h3>
@@ -181,7 +229,7 @@ export const Home = () => {
               (
                 courses.map((item)=>{
                 return(
-                  <Card item={item} type={user.type} faculty={faculty} />
+                  <Card item={item} type={user.type} faculty={faculty} setCourses={setCourses} />
                 )
                 }) 
               )

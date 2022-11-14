@@ -34,9 +34,9 @@ userRouter.route('/register/:name').get((req,res)=>{
 })
 
 userRouter.route('/register').post((req, res) => {
-    const {name,password,email,mobile,type}=req.body;
+    const {name,password,email,mobile,type,specialzation,bio,designation}=req.body;
     const temp="null"
-    const newUser = new Users({name,password,email,mobile,type,key:temp});
+    const newUser = new Users({name,password,email,mobile,type,key:temp,specialzation:specialzation,bio:bio,designation:designation});
     newUser.save()
     .then((response) =>
         res.json(response)     

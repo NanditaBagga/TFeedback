@@ -7,19 +7,6 @@
     border-bottom: 1px solid rgb(200,200,200);
     overflow: auto;
 }
-.col1{
-    display: flex;
-    flex-direction: row;
-    flex:0.4;
-}
-.col2{
-    display: flex;
-    flex:0.4;
-}
-.col3{
-    display: flex;
-    flex:0.2;
-}
 .col5{
     display: flex;
     flex:0.9;
@@ -33,6 +20,20 @@
     font-size: large;
 }
 
-.view-text-head{
-    font-size: x-large;
+.user-container{
+    overflow-y: auto;
+    display: flex;
+    border:1px solid black;
+    padding:2.5%;
+    margin:1% 30% 1% 30%;
+    border-radius: 8px;
+}
+.view-text-designation{
+    font-size: medium;
+    font-weight: 500;
+}
+
+.view-text-special{
+    font-size: small;
+    font-weight: 400;
 }

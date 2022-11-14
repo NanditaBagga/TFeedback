@@ -66,6 +66,33 @@ router.route('/profile/update').post((req,res)=>{
             res.status(400).json('Error: ' + e)
         })
     }
+    else if(key==="Bio")
+    {
+        Users.updateOne({_id:id},{$set:{bio:value}}).then(response=>{
+            res.json(response)
+        })
+        .catch(e=>{
+            res.status(400).json('Error: ' + e)
+        })
+    }
+    else if(key==="special")
+    {
+        Users.updateOne({_id:id},{$set:{specialzation:value}}).then(response=>{
+            res.json(response)
+        })
+        .catch(e=>{
+            res.status(400).json('Error: ' + e)
+        })
+    }
+    else if(key==="designation")
+    {
+        Users.updateOne({_id:id},{$set:{"designation":value}}).then(response=>{
+            res.json(response)
+        })
+        .catch(e=>{
+            res.status(400).json('Error: ' + e)
+        })
+    }
     else{
         Users.updateOne({_id:id},{$set:{"password":value}}).then(response=>{
             res.json(response)
@@ -177,6 +204,17 @@ router.route("/course/SubAdmin").post((req,res)=>{
         console.log(response)
         res.json("Done")
     }).catch(e=>{
+        res.json("Error occured")
+    })
+})
+
+router.route("/view/:type/:id").get((req,res)=>{
+    const {type,id}=req.params
+    Users.find({_id:id,type:type}).then(response=>{
+        res.json(response)
+    })
+    .catch(e=>{
+        console.log(e)
         res.json("Error occured")
     })
 })

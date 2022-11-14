@@ -80,17 +80,6 @@ export const ViewScreen = () => {
     const render = () => {
         return(
             <>
-                <div className='row-container'>
-                    <div className='col1'>
-                        <h3 className='view-text-head'>Name</h3>
-                    </div>    
-                    <div className='col2'>
-                        <h3 className='view-text-head'>E Mail</h3>
-                    </div>  
-                    <div className='col3'>
-                        <h3 className='view-text-head'>Mobile Number</h3>
-                    </div>  
-                </div>
                 {isLoading?
                 (
                     <div>
@@ -99,18 +88,26 @@ export const ViewScreen = () => {
                 ):
                 (
                     users.map((item)=>{
+                        const key=item.name
                         return(
-                            <div className='row-container'>
-                                <div className='col1'>
-                                    <h3 className='view-text'>{item.name}</h3>
-                                </div>    
-                                <div className='col2'>
-                                    <h3 className='view-text'>{item.email}</h3>
-                                </div>  
-                                <div className='col3'>
-                                    <h3 className='view-text'>{item.mobile}</h3>
-                                </div>  
-                            </div>
+                            <Link to={`/home/view/${item.type}/${item._id}`} style={{textDecoration:"none",color:"black"}}>
+                                <div key={key} className='user-container'>
+                                    
+                                        <img style={{width:"50%"}} alt={`${item.name}`} />
+                                        <div className='details-container'>
+                                        <h4 className='view-text'>{item.name}</h4>
+                                        {item.type==="Student"?
+                                        (
+                                            <h4 className='view-text-designation'>{item.designation} sem</h4>
+                                        ):
+                                        (
+                                            <h4 className='view-text-designation'>{item.designation}</h4>
+                                        )
+                                        }
+                                        <h4 className='view-text-special'>{item.specialzation}</h4>
+                                        </div>
+                                </div>
+                            </Link>
                         )
                     })
                 )}
