@@ -72,9 +72,10 @@ export const Card = ({ item,type,faculty, setCourses }) =>{
                     </>
                 ):
                 (
-                    <></>
+                    <Link to={`/home/course/${item.title}/srs`}>
+                    <button type={"button"} style={{position:"absolute",right:"5%"}} class="btn btn-secondary">SRS</button>
+                    </Link>
                 )
-
                 }
                 
             </div>

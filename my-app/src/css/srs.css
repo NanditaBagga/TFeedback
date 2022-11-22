@@ -1,0 +1,33 @@
+.SRS-form-container{
+    display: flex;
+    justify-content: center;
+    margin: 0 30% 0.5% 30%;
+    overflow: auto;
+    flex-direction: column;
+}
+
+.Text{
+    font-size: larger;
+    font-weight: 500;
+    margin: 5% 0 0 0
+}
+
+.input{
+    width:100%;
+    border-radius: 8px;
+    padding:0.3rem;
+}
+
+.my-btn{
+    margin-left: 24%;
+    margin-bottom: 15%;
+    padding:0.3rem;
+    border-radius: 8px;
+    cursor:pointer
+}
+
+.my-btn:hover{
+    transition-duration: 200ms;
+   background-color: rgb(200,200,200);
+
+}

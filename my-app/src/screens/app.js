@@ -7,6 +7,7 @@ import { ViewScreen } from "./viewUser.screens"
 import { AddUser } from "./addUser.screens"
 import { ProfileScreen } from "./profile.screens"
 import { UserDetails } from "./viewUserDetails.screens"
+import { SRS } from "./srs.screens"
 
 export const App = () => {
     return(
@@ -17,6 +18,7 @@ export const App = () => {
             <Route exact path="/home/view/:status" element={<ViewScreen />} ></Route>
             <Route exact path="/home/add/:status" element={<AddUser />} ></Route>
             <Route exact path="home/course/:id/" element={<Feedback />}></Route>
+            <Route exact path="home/course/:title/srs" element={<SRS />}></Route>
             <Route exact path="home/profile/:id" element={<ProfileScreen />}></Route>
             <Route exact path="home/view/:type/:id" element={<UserDetails />}></Route>
         </Routes>

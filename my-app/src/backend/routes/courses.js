@@ -1,6 +1,7 @@
 const router=require("express").Router()
 let Courses=require("../models/courses")
 let Users=require("../models/user")
+let Feedbacks=require("../models/feedback")
 let mongoose=require('mongoose')
 
 router.route('/').get((req, res) => {
@@ -219,5 +220,14 @@ router.route("/view/:type/:id").get((req,res)=>{
     })
 })
 
+router.route("/course/:title/srs").post((req,res)=>{
+    const { title } = req.params
+    const { q1,q2,q3,q4,q5,comment,name } = req.body
+    const newFeedback = new Feedbacks({Question1:q1,Question2:q2,Question3:q3,Question4:q4,Question5:q5,commentQuestion:comment,Course:title,senderName:name})
+    newFeedback.save().then((response) =>
+    {
+        res.json("Done") 
+    }).catch(err => res.status(400).json('Error: ' + err));
+})
 
 module.exports = router;
