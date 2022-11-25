@@ -61,12 +61,20 @@ export const SRS = () => {
         setQ4("")
         setQ5("")
         setComments("")
+        for(let i=0;i<5;i++)
+        {
+            if(document.querySelector(`input[name='${i+1}']:checked`)!==null)
+            {
+                document.querySelector(`input[name='${i+1}']:checked`).checked=false;
+            }
+        }
+        
     }
 
     const handleSubmit = async(event) => {
         event.preventDefault()
         setIsLoading(true)
-        const res=FeedbackCheck(q1,q2,q3,q4,q5,comments)
+        const res=FeedbackCheck(q1,q2,q3,q4,q5)
         if(res!==true)
         {
             alert(res)
@@ -90,12 +98,36 @@ export const SRS = () => {
             setQ4("")
             setQ5("")
             setComments("")
+            for(let i=0;i<5;i++)
+            {
+                if(document.querySelector(`input[name='${i+1}']:checked`)!==null)
+                {
+                    document.querySelector(`input[name='${i+1}']:checked`).checked=false;
+                }
+            }
             setIsLoading(false)
         }).catch(e=>{
             setIsLoading(false)
             alert("Some error occured")
         })
         setIsLoading(false)
+    }
+
+    const radioButtons = (value) => {
+        return(
+            <>
+                <input id={`${value}.1`} type="radio" name={value} value="Very Good" />
+                <label for={`${value}.1`}>Very Good</label>
+                <input id={`${value}.2`} type="radio" name={value} value="Good" />
+                <label for={`${value}.2`}>Good</label>
+                <input id={`${value}.3`} type="radio" name={value} value="Average" />
+                <label for={`${value}.3`}>Average</label>
+                <input id={`${value}.4`} type="radio" name={value} value="Bad" />
+                <label for={`${value}.4`}>Bad</label>
+                <input id={`${value}.5`} type="radio" name={value} value="Very Bad" />
+                <label for={`${value}.5`}>Very Bad</label>
+            </>
+        )
     }
 
     return(
@@ -105,7 +137,7 @@ export const SRS = () => {
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossOrigin="anonymous"></link>
             </body>
     
-            <div className="App">
+            <div>
                 <nav class="navbar navbar-expand-lg sticky-top"  style={{backgroundColor: "#e3f2fd"}}>
                     <div class="container-fluid">
                     <a href='/home' className="navbar-brand">TFeedback</a>
@@ -129,23 +161,34 @@ export const SRS = () => {
 
                 <h2 style={{textAlign:"center",marginTop:"2%"}}>Fill SRS for {title}</h2>
                 <form onSubmit={handleSubmit} onReset={handleReset}>
+                    <div className='srs-flex-container'>
                     <div className='SRS-form-container'>
                         <h4 className='Text'>Question 1</h4>
-                        <input onChange={(text)=>setQ1(text.target.value)} value={q1} className='input' type={"text"} placeholder='Fill question 1' />
+                        <div className='radio-button-container' onChange={(event)=>setQ1(event.target.value)}>
+                            {radioButtons(1)}
+                        </div>
                         <h4 className='Text'>Question 2</h4>
-                        <input onChange={(text)=>setQ2(text.target.value)} value={q2} className='input' type={"text"} placeholder='Fill question 2' />
+                        <div className='radio-button-container' onChange={(event)=>setQ2(event.target.value)}>
+                            {radioButtons(2)}
+                        </div>
                         <h4 className='Text'>Question 3</h4>
-                        <input onChange={(text)=>setQ3(text.target.value)} value={q3} className='input' type={"text"} placeholder='Fill question 3' />
+                        <div className='radio-button-container' onChange={(event)=>setQ3(event.target.value)}>
+                            {radioButtons(3)}
+                        </div>
                         <h4 className='Text'>Question 4</h4>
-                        <input onChange={(text)=>setQ4(text.target.value)} value={q4} className='input' type={"text"} placeholder='Fill question 4' />
+                        <div className='radio-button-container' onChange={(event)=>setQ4(event.target.value)}>
+                            {radioButtons(4)}
+                        </div>
                         <h4 className='Text'>Question 5</h4>
-                        <input onChange={(text)=>setQ5(text.target.value)} value={q5} className='input' type={"text"} placeholder='Fill question 5' />
+                        <div className='radio-button-container' onChange={(event)=>setQ5(event.target.value)}>
+                            {radioButtons(5)}
+                        </div>
                         <h4 className='Text'>Any comments?</h4>
-                        <textarea onChange={(text)=>setComments(text.target.value)} value={comments} type={"text"} placeholder='Your Comments' className='input' rows="4" cols="50" />
+                        <textarea onChange={(text)=>setComments(text.target.value)} value={comments} type={"text"} placeholder='Optional, your Comments' className='input' rows="4" cols="50" />
                         <br />
                         {isLoading?
                         (
-                            <h5 style={{textAlign:"center"}}>Request Processing...</h5>
+                            <h5 style={{textAlign:"center",fontSize:16}}>Request Processing...</h5>
                         ):
                         (
                             <div style={{display:"flex"}}>
@@ -154,6 +197,7 @@ export const SRS = () => {
                             </div>
                         )
                         }
+                    </div>
                     </div>
                 </form>
             </div>

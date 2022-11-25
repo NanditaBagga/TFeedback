@@ -65,10 +65,11 @@ export const LoginScreen = () => {
                         <input value={name} onChange={(text)=>setName(text.target.value)} className='form-input' type={"text"} placeholder='Fill user name' />
                         <h4 className='form-text'>Password</h4>
                         <input value={password} onChange={(text)=>setPassword(text.target.value)} className='form-input' type={"password"} placeholder='Fill password' />
-                        <h4 for="cars" className='form-text'>Type</h4>
-                        <select value={type} name="cars" id="cars" className='form-input' onChange={(text)=>setType(text.target.value)}>
+                        <h4 for="type" className='form-text'>Type</h4>
+                        <select value={type} name="type" className='form-input' onChange={(text)=>setType(text.target.value)}>
+                            <option value="" selected disabled>Select type</option>
                             <option value="Student">Student</option>
-                            <option value="Faculty">Faculty</option>
+                            <option value="Faculty">Faculty</option> 
                             <option value="Admin">Admin</option>
                         </select>
                         {type==="Faculty"||type==="Admin"?

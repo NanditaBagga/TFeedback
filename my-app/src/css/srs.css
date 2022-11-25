@@ -1,7 +1,11 @@
-.SRS-form-container{
+.srs-flex-container{
     display: flex;
     justify-content: center;
-    margin: 0 30% 0.5% 30%;
+}
+
+.SRS-form-container{
+    display: flex;
+    width: 40%;
     overflow: auto;
     flex-direction: column;
 }
@@ -21,7 +25,7 @@
 .my-btn{
     margin-left: 24%;
     margin-bottom: 15%;
-    padding:0.3rem;
+    padding:0.2rem;
     border-radius: 8px;
     cursor:pointer
 }
@@ -30,4 +34,13 @@
     transition-duration: 200ms;
    background-color: rgb(200,200,200);
 
+}
+
+label{
+    margin-right: 7.5%;
+}
+.radio-button-container{
+    border-bottom: 1px solid gray;
+    padding: 8px;
+    margin-top: 0.2%;
 }
