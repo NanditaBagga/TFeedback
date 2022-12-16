@@ -10,6 +10,7 @@ import { UserDetails } from "./viewUserDetails.screens"
 import { SRS } from "./srs.screens"
 
 export const App = () => {
+
     return(
         <Routes>
             <Route path="/" element={<LoginScreen />} ></Route>

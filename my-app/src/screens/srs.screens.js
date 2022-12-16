@@ -74,7 +74,8 @@ export const SRS = () => {
     const handleSubmit = async(event) => {
         event.preventDefault()
         setIsLoading(true)
-        const res=FeedbackCheck(q1,q2,q3,q4,q5)
+        //const res=FeedbackCheck(q1,q2,q3,q4,q5,comments)
+        const res=true
         if(res!==true)
         {
             alert(res)
@@ -90,22 +91,43 @@ export const SRS = () => {
             comment:comments,
             name:user.name
         }
-        await axios.post(`http://localhost:5000/home/course/${title}/srs`,data).then(res=>{
-            alert("Feedback sent")
-            setQ1("")
-            setQ2("")
-            setQ3("")
-            setQ4("")
-            setQ5("")
-            setComments("")
-            for(let i=0;i<5;i++)
-            {
-                if(document.querySelector(`input[name='${i+1}']:checked`)!==null)
-                {
-                    document.querySelector(`input[name='${i+1}']:checked`).checked=false;
-                }
+        await axios.post(`http://localhost:5000/home/course/${title}/srs`,data).then(async(res)=>{
+            const URL="http://localhost:5000/home/check"
+            let data={
+                comment:comments
             }
+            const response=fetch(URL,{
+                method:"POST",
+                headers: {
+                    'content-Type': 'application/json',
+                    'charset':'UTF-8'
+                },
+                body:JSON.stringify(data)
+            })
+            console.log(response.json())
+            alert(response.json())
             setIsLoading(false)
+            return
+            await axios.post(`http://localhost:5000/home/course/${title}/srs/entry`,response.json()).then(res=>{
+                alert("Feedback sent")
+                setQ1("")
+                setQ2("")
+                setQ3("")
+                setQ4("")
+                setQ5("")
+                setComments("")
+                for(let i=0;i<5;i++)
+                {
+                    if(document.querySelector(`input[name='${i+1}']:checked`)!==null)
+                    {
+                        document.querySelector(`input[name='${i+1}']:checked`).checked=false;
+                    }
+                }
+                setIsLoading(false)
+            }).catch(e=>{
+                setIsLoading(false)
+                alert("Some error occured")
+            })
         }).catch(e=>{
             setIsLoading(false)
             alert("Some error occured")

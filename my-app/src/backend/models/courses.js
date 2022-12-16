@@ -23,7 +23,8 @@ const courseSchema = new Schema({
     upvotesBy:[{
         name:String
       }]
-  }]
+  }],
+  feedbacks:[]
 });
 
 const Courses = mongoose.model('Courses', courseSchema);

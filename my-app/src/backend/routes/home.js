@@ -230,4 +230,15 @@ router.route("/course/:title/srs").post((req,res)=>{
     }).catch(err => res.status(400).json('Error: ' + err));
 })
 
+router.route("/course/:title/srs/entry").post((req,res)=>{
+    const { data }=req.body
+    const { title } = req.params
+    Courses.findOneAndUpdate({title:title},{$set:{feedbacks:{$push:data}}}).then(res=>{
+        res.json("Done")
+    }).catch(e=>{
+        console.log(e)
+        res.status(400).json(e)
+    })
+})
+
 module.exports = router;

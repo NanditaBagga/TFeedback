@@ -66,7 +66,7 @@ export const LoginScreen = () => {
                         <h4 className='form-text'>Password</h4>
                         <input value={password} onChange={(text)=>setPassword(text.target.value)} className='form-input' type={"password"} placeholder='Fill password' />
                         <h4 for="type" className='form-text'>Type</h4>
-                        <select value={type} name="type" className='form-input' onChange={(text)=>setType(text.target.value)}>
+                        <select name="type" className='form-input' onClick={(text)=>setType(text.target.value)}>
                             <option value="" selected disabled>Select type</option>
                             <option value="Student">Student</option>
                             <option value="Faculty">Faculty</option> 
