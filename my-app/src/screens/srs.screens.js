@@ -91,24 +91,31 @@ export const SRS = () => {
             comment:comments,
             name:user.name
         }
+        
+        
         await axios.post(`http://localhost:5000/home/course/${title}/srs`,data).then(async(res)=>{
-            const URL="http://localhost:5000/home/check"
-            let data={
-                comment:comments
-            }
-            const response=fetch(URL,{
+            const URL="http://localhost:12345/"
+            let gg=[{comment:comments}]
+                
+            
+            
+            const response=await fetch(URL,{
                 method:"POST",
                 headers: {
-                    'content-Type': 'application/json',
-                    'charset':'UTF-8'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+            
                 },
-                body:JSON.stringify(data)
+                body:JSON.stringify(gg)
+
+
+                
             })
-            console.log(response.json())
-            alert(response.json())
-            setIsLoading(false)
-            return
-            await axios.post(`http://localhost:5000/home/course/${title}/srs/entry`,response.json()).then(res=>{
+            const vr=await response.json()
+            console.log(vr)
+           
+      
+            await axios.post(`http://localhost:5000/home/course/${title}/srs/entry`,vr).then(res=>{
                 alert("Feedback sent")
                 setQ1("")
                 setQ2("")

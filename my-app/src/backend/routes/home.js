@@ -3,6 +3,7 @@ let Courses=require("../models/courses")
 let Users=require("../models/user")
 let Feedbacks=require("../models/feedback")
 let mongoose=require('mongoose')
+const { response } = require("express")
 
 router.route('/').get((req, res) => {
     Courses.find()
@@ -231,9 +232,10 @@ router.route("/course/:title/srs").post((req,res)=>{
 })
 
 router.route("/course/:title/srs/entry").post((req,res)=>{
-    const { data }=req.body
+    const { prediction }=req.body
+    console.log(req.body)
     const { title } = req.params
-    Courses.findOneAndUpdate({title:title},{$set:{feedbacks:{$push:data}}}).then(res=>{
+    Courses.findOneAndUpdate({title:title},{$push:{feedbacks:prediction}}).then(response=>{
         res.json("Done")
     }).catch(e=>{
         console.log(e)
