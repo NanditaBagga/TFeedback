@@ -51,7 +51,14 @@ export const Card = ({ item,type,faculty, setCourses }) =>{
         <div class="card mt-2" style={{width: "50%"}} key={item.title}>
             <img src={img4} class="card-img-top" alt={item.title} />
             <div class="card-body">
-                <h5 class="card-title">{item.title}</h5>
+                {item.isLive==="true"?
+                (
+                    <h5 class="card-title">{item.title} (Live!!)</h5>
+                ):
+                (
+                    <h5 class="card-title">{item.title}</h5>
+                )
+                }
                 <Link to={`/home/course/${item._id}`}>
                     <h5 class="btn btn-secondary">Open</h5>
                 </Link>

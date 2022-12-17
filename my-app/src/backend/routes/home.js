@@ -3,7 +3,6 @@ let Courses=require("../models/courses")
 let Users=require("../models/user")
 let Feedbacks=require("../models/feedback")
 let mongoose=require('mongoose')
-const { response } = require("express")
 
 router.route('/').get((req, res) => {
     Courses.find()
@@ -21,7 +20,7 @@ router.route('/course/:id').get((req,res)=>{
 router.route('/add/course').post((req,res)=>{
     const { title, photo, createdAt } = req.body
     const sub=""
-    const newCourse = new Courses({title, photo, createdAt,SubAdmin:sub});
+    const newCourse = new Courses({title, photo, createdAt,SubAdmin:sub,isLive:"false"});
 
   newCourse.save()
     .then(() => res.json('User added!'))
@@ -41,6 +40,17 @@ router.route('/course/:id/send').post((req,res)=>{
     today = mm + '/' + dd + '/' + yyyy + " "+ time;
     Courses.updateOne({_id:ID},{$push:{messages:{title:msg,from:from,userType:userType,date:today,upvotes:0,upvotesBy:[]}}}).then(response=>{
         res.json('Message added!')
+    })
+    .catch(e=>{
+        res.status(400).json('Error: ' + e)
+    })
+})
+
+router.route('/course/:id/live').post((req,res)=>{
+    const ID=req.params.id
+    const { live }=req.body
+    Courses.updateOne({_id:ID},{$set:{isLive:live}}).then(response=>{
+        res.json('Done!')
     })
     .catch(e=>{
         res.status(400).json('Error: ' + e)

@@ -1,4 +1,4 @@
-import React,{ useEffect, useState, useContext} from 'react'
+import React,{ useEffect, useState, useContext, useRef} from 'react'
 import { Link } from 'react-router-dom'
 import { useParams } from "react-router-dom"
 import "../css/feedback.css"
@@ -9,8 +9,11 @@ import { UserContext } from '../services/user.context'
 export const Feedback = () => {
 
   const [title,setTitle]=useState(null)
+  const [live,setLive]=useState(null)
   const [message,setMessage]=useState("")
   const [allMessages,setAllMessages]=useState([])
+  const positive=useRef(0)
+  const negative=useRef(0)
   const { user, setUser }=useContext(UserContext)
 
   useEffect(()=>{
@@ -29,7 +32,21 @@ export const Feedback = () => {
   const { id } = useParams()
   useEffect(()=>{
     axios.get(`http://localhost:5000/home/course/${id}`).then(res=>{
+      if(res.data.feedbacks.length!==0)
+      {
+        let pos=0
+        for(let i=0;i<res.data.feedbacks.length;i++)
+        {
+          if(res.data.feedbacks[i]==="['Positive']")
+          {
+            pos=pos+1
+          }
+        }
+        positive.current=pos/res.data.feedbacks.length
+        negative.current=(res.data.feedbacks.length-pos)/res.data.feedbacks.length
+      }
       setTitle(res.data.title)
+      setLive(res.data.isLive)
       setAllMessages(res.data.messages)
         var tempArr=res.data.messages
         function compare(a,b){
@@ -77,7 +94,6 @@ export const Feedback = () => {
       setMessage("")
     })
   }
-
   const handleDropdown = () => {
     let x=document.getElementById("header-dropdown-options")
     if (x.style.display === "none") {
@@ -91,6 +107,27 @@ export const Feedback = () => {
     setUser(null)
     localStorage.setItem("loginStatus",false)
     localStorage.setItem("loginStatus",null)
+  }
+
+  const handleLive = () => {
+    let data=null
+    if(live==="true")
+    {
+      data={
+        live:"false"
+      }
+    }
+    else{
+      data={
+        live:"true"
+      }
+    }
+    axios.post(`http://localhost:5000/home/course/${id}/live`, data).then(response=>{
+      window.location.reload()
+    }).catch(e=>{
+      console.log(e)
+      setMessage("")
+    })
   }
 
     return(
@@ -111,6 +148,25 @@ export const Feedback = () => {
                   <li class="nav-item">
                     <h5 style={{fontWeight:"normal", marginTop:"5%"}} className="navbar-brand" aria-current="page" >{title}</h5>
                   </li>
+                  <li>
+                  <h5 style={{fontWeight:"normal", fontSize:16, marginTop:"5%"}} className="navbar-brand" aria-current="page" >Postive: {positive.current*100}%</h5>
+                  </li>
+                  <li>
+                  <h5 style={{fontWeight:"normal", fontSize:16, marginTop:"5%"}} className="navbar-brand" aria-current="page" >Negative: {negative.current*100}%</h5>
+                  </li>
+                  {user.type==="Student"?
+                  (<></>):
+                  (
+                    live==="true"?
+                    (
+                      <h5 onClick={handleLive} style={{cursor:"pointer", fontWeight:"normal", fontSize:16, marginTop:"0.5%",position:"absolute",right:75}} className="navbar-brand" aria-current="page" >Remove from live</h5>
+                    ):
+                    (
+                      
+                      <h5 onClick={handleLive} style={{cursor:"pointer", fontWeight:"normal", fontSize:16, marginTop:"0.5%",position:"absolute",right:75}} className="navbar-brand" aria-current="page" >Make it live</h5>
+                    )
+                  )
+                  }
                 </ul>
                 <div style={{display:'flex',flexDirection:"column"}}>
         <button type='button' onClick={handleDropdown} style={{backgroundColor:"#e3f2fd", border:"none"}} ><i class="material-icons icon-styling pe-2">account_circle</i></button>

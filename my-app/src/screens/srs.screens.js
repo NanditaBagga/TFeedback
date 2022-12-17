@@ -74,8 +74,7 @@ export const SRS = () => {
     const handleSubmit = async(event) => {
         event.preventDefault()
         setIsLoading(true)
-        //const res=FeedbackCheck(q1,q2,q3,q4,q5,comments)
-        const res=true
+        const res=FeedbackCheck(q1,q2,q3,q4,q5,comments)
         if(res!==true)
         {
             alert(res)
@@ -91,14 +90,9 @@ export const SRS = () => {
             comment:comments,
             name:user.name
         }
-        
-        
         await axios.post(`http://localhost:5000/home/course/${title}/srs`,data).then(async(res)=>{
             const URL="http://localhost:12345/"
             let gg=[{comment:comments}]
-                
-            
-            
             const response=await fetch(URL,{
                 method:"POST",
                 headers: {
@@ -106,15 +100,9 @@ export const SRS = () => {
                     'Content-Type': 'application/json',
             
                 },
-                body:JSON.stringify(gg)
-
-
-                
+                body:JSON.stringify(gg)                
             })
             const vr=await response.json()
-            console.log(vr)
-           
-      
             await axios.post(`http://localhost:5000/home/course/${title}/srs/entry`,vr).then(res=>{
                 alert("Feedback sent")
                 setQ1("")
@@ -213,7 +201,7 @@ export const SRS = () => {
                             {radioButtons(5)}
                         </div>
                         <h4 className='Text'>Any comments?</h4>
-                        <textarea onChange={(text)=>setComments(text.target.value)} value={comments} type={"text"} placeholder='Optional, your Comments' className='input' rows="4" cols="50" />
+                        <textarea onChange={(text)=>setComments(text.target.value)} value={comments} type={"text"} placeholder='Your Comments' className='input' rows="4" cols="50" />
                         <br />
                         {isLoading?
                         (

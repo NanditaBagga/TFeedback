@@ -24,7 +24,8 @@ const courseSchema = new Schema({
         name:String
       }]
   }],
-  feedbacks:[]
+  feedbacks:[],
+  isLive:String
 });
 
 const Courses = mongoose.model('Courses', courseSchema);
