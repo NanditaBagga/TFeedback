@@ -4,7 +4,7 @@ import axios from 'axios'
 import "../css/viewuser.css";
 import { Link } from 'react-router-dom';
 import { UserContext } from '../services/user.context';
-import img from "../assets/images/profile-1.jpg"
+import defaultUserImg from "../assets/images/profileImg.jpg"
 
 export const ViewScreen = () => {
 
@@ -94,7 +94,7 @@ export const ViewScreen = () => {
                             <Link to={`/home/view/${item.type}/${item._id}`} style={{textDecoration:"none",color:"black"}}>
                                 <div key={key} className='user-container'>
                                     
-                                        <img src={item.image} style={{height:150,width:150,marginRight:100}} alt={`${item.name}`} />
+                                        <img src={item.image || defaultUserImg} style={{height:150,width:150,marginRight:100}} alt={`${item.name}`} />
                                         <div className='details-container'>
                                         <h4 className='view-text'>{item.name}</h4>
                                         {item.type==="Student"?

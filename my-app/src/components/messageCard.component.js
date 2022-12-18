@@ -1,8 +1,42 @@
 /* eslint-disable eqeqeq */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios"
+import "../css/feedback.css"
 
-export const MessageCard = ({ msg,name,courseID, setAllMessages }) => {
+export const MessageCard = ({ courseTitle, msg,name,courseID, setAllMessages }) => {
+    const [sentiment, setSentiment] = useState(null);
+    
+
+    useEffect(() => {
+        let body = [{ comment: msg.title }]
+        const URL = "http://127.0.0.1:12345"
+        fetch(URL,{
+            method:"POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+        
+            },
+            body:JSON.stringify(body)                
+        })
+        .then(response => response.json())
+        .then(responseJSON => {
+            const { prediction } = responseJSON;
+            console.log(responseJSON);
+
+            if (prediction == "['Positive']"){
+                setSentiment('Positive');
+            } else {
+                setSentiment('Negative');
+            }
+
+            axios.post(`http://localhost:5000/home/course/${courseTitle}/srs/entry`, responseJSON)
+            .then(res => {
+                console.log(res);
+            })
+        })
+        .catch(e => console.log(e));        
+    }, [])
 
     if(!name)
     {
@@ -89,8 +123,9 @@ export const MessageCard = ({ msg,name,courseID, setAllMessages }) => {
         <div id = "message-reply">
         <div className={msg.userType=="Student"?"message-card":"message-card-special"}>
           <div class = "card-header d-flex flex-row justify-content-between">
-              <div id = "sender-name">{msg.from}</div>
+              <div id = "sender-name">{msg.from}</div>              
               <div>{msg.date}</div>
+              <div className = {sentiment == "Positive"?"LabelPos":"LabelNeg"}>{sentiment}</div>
               <div class = "upvote d-flex flex-row justify-content-between">
                   <div>{msg.upvotes}</div>
                   {msg.userType==="Student"?

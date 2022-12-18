@@ -91,38 +91,39 @@ export const SRS = () => {
             name:user.name
         }
         await axios.post(`http://localhost:5000/home/course/${title}/srs`,data).then(async(res)=>{
-            const URL="http://localhost:12345/"
-            let gg=[{comment:comments}]
-            const response=await fetch(URL,{
-                method:"POST",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+            // const URL="http://localhost:12345/"
+            // let gg=[{comment:comments}]
+            // const response=await fetch(URL,{
+            //     method:"POST",
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json',
             
-                },
-                body:JSON.stringify(gg)                
-            })
-            const vr=await response.json()
-            await axios.post(`http://localhost:5000/home/course/${title}/srs/entry`,vr).then(res=>{
-                alert("Feedback sent")
-                setQ1("")
-                setQ2("")
-                setQ3("")
-                setQ4("")
-                setQ5("")
-                setComments("")
-                for(let i=0;i<5;i++)
-                {
-                    if(document.querySelector(`input[name='${i+1}']:checked`)!==null)
-                    {
-                        document.querySelector(`input[name='${i+1}']:checked`).checked=false;
-                    }
-                }
-                setIsLoading(false)
-            }).catch(e=>{
-                setIsLoading(false)
-                alert("Some error occured")
-            })
+            //     },
+            //     body:JSON.stringify(gg)                
+            // })
+            // const vr=await response.json()
+            // await axios.post(`http://localhost:5000/home/course/${title}/srs/entry`,vr).then(res=>{
+            //     alert("Feedback sent")
+            //     setQ1("")
+            //     setQ2("")
+            //     setQ3("")
+            //     setQ4("")
+            //     setQ5("")
+            //     setComments("")
+            //     for(let i=0;i<5;i++)
+            //     {
+            //         if(document.querySelector(`input[name='${i+1}']:checked`)!==null)
+            //         {
+            //             document.querySelector(`input[name='${i+1}']:checked`).checked=false;
+            //         }
+            //     }
+            //     setIsLoading(false)
+            // }).catch(e=>{
+            //     setIsLoading(false)
+            //     alert("Some error occured")
+            // })
+            console.log(res);
         }).catch(e=>{
             setIsLoading(false)
             alert("Some error occured")

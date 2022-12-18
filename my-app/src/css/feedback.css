@@ -48,3 +48,9 @@
     display: flex;
     margin:1% 6% 1% 6%;
 }
+.LabelPos{
+    color: rgb(43, 161, 43)
+}
+.LabelNeg{
+    color: rgb(255, 48, 48)
+}

@@ -148,12 +148,12 @@ export const Feedback = () => {
                   <li class="nav-item">
                     <h5 style={{fontWeight:"normal", marginTop:"5%"}} className="navbar-brand" aria-current="page" >{title}</h5>
                   </li>
-                  <li>
+                  {/* <li>
                   <h5 style={{fontWeight:"normal", fontSize:16, marginTop:"5%"}} className="navbar-brand" aria-current="page" >Postive: {positive.current*100}%</h5>
                   </li>
                   <li>
                   <h5 style={{fontWeight:"normal", fontSize:16, marginTop:"5%"}} className="navbar-brand" aria-current="page" >Negative: {negative.current*100}%</h5>
-                  </li>
+                  </li> */}
                   {user.type==="Student"?
                   (<></>):
                   (
@@ -189,7 +189,7 @@ export const Feedback = () => {
           (
               allMessages.map(item=>{
                 return(
-                  <MessageCard msg={item} name={user.name} courseID={id} setAllMessages={setAllMessages}/>
+                  <MessageCard courseTitle = {title} msg={item} name={user.name} courseID={id} setAllMessages={setAllMessages}/>
                 )
               })  
           ):
